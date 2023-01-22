@@ -30,11 +30,13 @@ namespace Classes
 
         public void MoveBlock(int rows, int columns)
         {
-
+            if (GameField[rows, columns] >= 0)
+            {
                 GameField[offset.Row, offset.Column] = 0;
                 offset.Row = rows;
                 offset.Column = columns;
                 GameField[offset.Row, offset.Column] = Id;
+            }
         }
 
         private bool IsDetailFit(int row, int column)

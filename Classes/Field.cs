@@ -33,18 +33,29 @@ namespace Classes
 
         public Field Copy()
         {
-            Field fnew = new Field(8, 8);
+            Field NewGameField = new Field(8, 8);
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    fnew[i, j] = field[i, j];
+                    NewGameField[i, j] = field[i, j];
                 }
             }
-            return fnew;
+            return NewGameField;
+        }
+        public void Clone(Field NewGameField)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    field[i, j] = NewGameField[i, j];
+                }
+            }
+
         }
 
-    public void Draw()
+        public void Draw()
     {
         for (int i = 0; i < 8; i++)
         {

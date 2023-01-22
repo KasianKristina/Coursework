@@ -68,6 +68,9 @@
     <Compile Include="FigureKing.cs" />
     <Compile Include="FigureKingBlack.cs" />
     <Compile Include="FigureQueen.cs" />
+    <Compile Include="FigureQueenBlack.cs" />
+    <Compile Include="Function.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

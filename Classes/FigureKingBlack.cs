@@ -11,6 +11,7 @@ namespace Classes
         public FigureKingBlack(ref Field GameField)
         {
             this.GameField = GameField;
+            GameField[7, 4] = this.Id;
         }
         public override int Id
         {
