@@ -10,7 +10,7 @@ namespace Classes
     {
         protected abstract Position StartOffset { get; }
         public abstract int Id { get; }
-        private Position offset { get; set; }
+        public Position offset { get; set; }
         protected Field GameField { get; set; }
         public abstract Color Color { get; }
         public Figure()

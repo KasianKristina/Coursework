@@ -9,8 +9,8 @@ namespace Classes
     public class Player
     {
         public Figure king;
-        protected Figure queen;
-        protected Color Color;
+        public Figure queen;
+        public Color Color;
         public Field GameField;
 
         public Player(Color color, ref Field GameField)
@@ -29,7 +29,7 @@ namespace Classes
             }
         }
 
-        public void Wave(int startX, int startY, int finishX, int finishY)
+        public void Wave(int startX, int startY, int finishX, int finishY, Figure figure)
         {
             int result, fx, fy, x, y;
             Field cMap = Function.CreateWave(startX, startY, finishX, finishY, false, GameField);
@@ -39,7 +39,7 @@ namespace Classes
             y = finishY;
             cMap.Draw();
             (fx, fy) = Function.Search(x, y, result, ref cMap, false);
-            //startKing.MoveBlock(fx, fy);
+            figure.MoveBlock(fx, fy);
 
             cMap.Draw();
         }
@@ -48,7 +48,18 @@ namespace Classes
         {
             if (motion % 6 == 0)
             {
-                queen.MoveDetailLeft
+                //queen.MoveDetailLeft
+            }
+            else
+            {
+                if (Color == Color.White)
+                {
+                    Wave(king.offset.Row, king.offset.Column, 7, 4, king);
+                }
+                else
+                {
+                    Wave(king.offset.Row, king.offset.Column, 0, 4, king);
+                }
             }
         }
     }
