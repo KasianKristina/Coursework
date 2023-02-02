@@ -8,6 +8,124 @@ namespace Classes
 {
     class Function
     {
+        public bool NoWall(int x, int y, ref Field GameField)
+        {
+            if (GameField[x, y] < 0)
+                return false;
+            else return true;
+        }
+
+        // преграды ферзем/королем
+        public void BlocksWay(int x, int y, ref Field GameField, Color color)
+        {
+            int mark;
+            if (color == Color.White)
+                mark = -7;
+            else mark = -8;
+            for (int i = 0; i < 8; i++)
+            {
+                if (NoWall(i, y, ref GameField))
+                    GameField[i, y] = mark;
+                else break;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                if (NoWall(x, i, ref GameField))
+                    GameField[x, i] = mark;
+                else break;
+            }
+            DiagonalMarks(x, y, mark, ref GameField);
+        }
+
+        // пометки диагоналей
+        public void DiagonalMarks(int x, int y, int mark1, ref Field GameField)
+        {
+            int i = x, j = y;
+            if (GameField.IsEmpty(i + 1, j + 1))
+            {
+                i = x + 1;
+                j = y + 1;
+            }
+            else
+            {
+                i = x;
+                j = y;
+            }
+            while (i < 7 && j < 7)
+            {
+                if (NoWall(i, j, ref GameField))
+                {
+                    GameField[i, j] = mark1;
+                    i++;
+                    j++;
+                }
+                else break;
+            }
+
+            if (GameField.IsEmpty(i - 1, j - 1))
+            {
+                i = x - 1;
+                j = y - 1;
+            }
+            else
+            {
+                i = x;
+                j = y;
+            }
+            while (i > 0 && j > 0)
+            {
+                if (NoWall(i, j, ref GameField))
+                {
+                    GameField[i, j] = mark1;
+                    i--;
+                    j--;
+                }
+                else break;
+            }
+
+            if (GameField.IsEmpty(i + 1, j - 1))
+            {
+                i = x + 1;
+                j = y - 1;
+            }
+            else
+            {
+                i = x;
+                j = y;
+            }
+            while (j > 0 && i < 7)
+            {
+                if (NoWall(i, j, ref GameField))
+                {
+                    GameField[i, j] = mark1;
+                    i++;
+                    j--;
+                }
+                else break;
+            }
+
+            if (GameField.IsEmpty(i - 1, j + 1))
+            {
+                i = x - 1;
+                j = y + 1;
+            }
+            else
+            {
+                i = x;
+                j = y;
+            }
+            while (i > 0 && j < 7)
+            {
+                if (NoWall(i, j, ref GameField))
+                {
+                    GameField[i, j] = mark1;
+                    i--;
+                    j++;
+                }
+                else break;
+            }
+        }
+
         public static (int fx, int fy) Search(int x, int y, int result, ref Field cMap, bool wall)
         {
             while (result != 1)

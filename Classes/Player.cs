@@ -8,8 +8,8 @@ namespace Classes
 {
     public class Player
     {
-        public Figure king;
-        public Figure queen;
+        public FigureKing king;
+        public FigureQueen queen;
         public Color Color;
         public Field GameField;
 
@@ -19,17 +19,17 @@ namespace Classes
             this.GameField = GameField;
             if (color == Color.White)
             {
-                king = new FigureKing(ref GameField);
-                queen = new FigureQueen(ref GameField);
+                king = new FigureKing(ref GameField, color);
+                queen = new FigureQueen(ref GameField, color);
             }
             else
             {
-                king = new FigureKingBlack(ref GameField);
-                queen = new FigureQueenBlack(ref GameField);
+                king = new FigureKing(ref GameField, color);
+                queen = new FigureQueen(ref GameField, color);
             }
         }
 
-        public void Wave(int startX, int startY, int finishX, int finishY, Figure figure)
+        public void Wave(int startX, int startY, int finishX, int finishY, FigureKing figure)
         {
             int result, fx, fy, x, y;
             Field cMap = Function.CreateWave(startX, startY, finishX, finishY, false, GameField);
@@ -39,7 +39,7 @@ namespace Classes
             y = finishY;
             cMap.Draw();
             (fx, fy) = Function.Search(x, y, result, ref cMap, false);
-            figure.MoveBlock(fx, fy);
+            figure.MoveFigureKing(fx, fy);
 
             cMap.Draw();
         }

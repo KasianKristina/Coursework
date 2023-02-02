@@ -8,11 +8,11 @@ namespace Classes
 {
     public abstract class Figure
     {
-        protected abstract Position StartOffset { get; }
-        public abstract int Id { get; }
+        protected Position StartOffset { get; }
+        protected int Id { get; set; }
         public Position offset { get; set; }
         protected Field GameField { get; set; }
-        public abstract Color Color { get; }
+        protected Color Color { get; set; }
         public Figure()
         {
             offset = new Position(StartOffset.Row, StartOffset.Column);
