@@ -8,7 +8,14 @@ namespace Classes
 {
     class Function
     {
-        public bool NoWall(int x, int y, ref Field GameField)
+
+        public static void PortimGameField(ref Field GameField, Player competitor)
+        {
+            BlocksWay(competitor.queen.offset.Row, competitor.queen.offset.Column, ref GameField);
+            GameField.Draw();
+            BlocksByKing(competitor.king.offset.Row, competitor.king.offset.Column, ref GameField);
+        }
+        public static bool NoWall(int x, int y, ref Field GameField)
         {
             if (GameField[x, y] < 0)
                 return false;
@@ -16,12 +23,51 @@ namespace Classes
         }
 
         // преграды ферзем/королем
-        public void BlocksWay(int x, int y, ref Field GameField, Color color)
+
+        public static void BlocksByKing(int x, int y, ref Field GameField)
         {
-            int mark;
-            if (color == Color.White)
-                mark = -7;
-            else mark = -8;
+            // Рисует битые поля короля
+
+            if (GameField.IsEmptyWave(x, y - 1))
+            {
+                GameField[x, y - 1] = -7;
+            }
+            if (GameField.IsEmptyWave(x, y + 1) )
+            {
+                GameField[x, y + 1] = -7;
+            }
+            if (GameField.IsEmptyWave(x + 1, y) )
+            {
+                GameField[x + 1, y] = -7;
+            }
+            if (GameField.IsEmptyWave(x - 1, y))
+            {
+                GameField[x - 1, y] = -7;
+            }
+
+            if (GameField.IsEmptyWave(x - 1, y - 1))
+            {
+                GameField[x - 1, y - 1] = -7;
+            }
+            if (GameField.IsEmptyWave(x - 1, y + 1))
+            {
+                GameField[x - 1, y + 1] = -7;
+            }
+            if (GameField.IsEmptyWave(x + 1, y - 1))
+            {
+                GameField[x + 1, y - 1] = -7;
+            }
+            if (GameField.IsEmptyWave(x + 1, y + 1))
+            {
+                GameField[x + 1, y + 1] = -7;
+            }
+        }
+        public static void BlocksWay(int x, int y, ref Field GameField)
+        {
+            // Рисует битые поля королевы
+            int mark = -7;
+            
+           
             for (int i = 0; i < 8; i++)
             {
                 if (NoWall(i, y, ref GameField))
@@ -38,7 +84,7 @@ namespace Classes
         }
 
         // пометки диагоналей
-        public void DiagonalMarks(int x, int y, int mark1, ref Field GameField)
+        public static void DiagonalMarks(int x, int y, int mark1, ref Field GameField)
         {
             int i = x, j = y;
             if (GameField.IsEmpty(i + 1, j + 1))
@@ -167,6 +213,17 @@ namespace Classes
             }
             return (x, y);
         }
+        // пат
+/*        public bool Stalemate(int x_king, int y_king, int x_queen, int y_queen,
+            int x_king_opponent, int y_king_opponent, Player player,
+            int x_queen_next, int y_queen_next, bool flag)
+        {
+            if (OpportunityToMakeMoveKing(x_king, y_king, x_king_opponent, y_king_opponent, player, motion) ||
+                OpportunityToMakeMoveQueen(x_queen, y_queen, x_queen_next, y_queen_next, motion, flag))
+                return false;
+            else return true;
+        }
+*/
 
         public static Field CreateWave(int startX, int startY, int finishX, int finishY, bool wall, Field field)
         {
@@ -188,6 +245,7 @@ namespace Classes
                 }
             }
             cMap[7, 4] = -6;
+            cMap[0, 4] = -6;
             cMap[startX, startY] = 0;
             while (add == true)
             {

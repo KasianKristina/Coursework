@@ -52,57 +52,50 @@ namespace Classes
                     field[i, j] = NewGameField[i, j];
                 }
             }
-
         }
 
         public void Draw()
-    {
-        for (int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8; j++)
+            for (int i = 0; i < 8; i++)
             {
-                Console.Write(field[i, j] + "   ");
+                for (int j = 0; j < 8; j++)
+                {
+                    if (field[i, j] < 0)
+                    {
+                        Console.Write(field[i, j] + "   ");
+                    }
+                    else
+                    {
+                        Console.Write(" " + field[i, j] + "   ");
+                    }
+                }
+                Console.WriteLine();
             }
-            Console.WriteLine();
+            Console.WriteLine('*' * 10);
         }
-        Console.WriteLine('*' * 10);
-    }
 
-    // находится ли клетка внутри поля
-    public bool IsInside(int row, int column)
-    {
-        if (row >= 0 && row < Rows
-                && column >= 0 && column < Columns)
-            return true;
-        else return false;
-    }
-
-    // пустая ли клетка
-    public bool IsEmpty(int row, int column)
-    {
-        if (IsInside(row, column) && field[row, column] == 0)
-            return true;
-        else return false;
-    }
-
-    public bool IsEmptyWave(int row, int column)
-    {
-        if (IsInside(row, column) && field[row, column] >= 0)
-            return true;
-        else return false;
-    }
-
-    // пустая ли строка
-    public bool IsRowEmpty(int row)
-    {
-        for (int c = 0; c < Columns; c++)
+        // находится ли клетка внутри поля
+        public bool IsInside(int row, int column)
         {
-            if (field[row, c] != 0)
-            {
-                return false;
-            }
+            if (row >= 0 && row < Rows
+                    && column >= 0 && column < Columns)
+                return true;
+            else return false;
         }
-        return true;
+
+        // пустая ли клетка
+        public bool IsEmpty(int row, int column)
+        {
+            if (IsInside(row, column) && field[row, column] == 0)
+                return true;
+            else return false;
+        }
+
+        public bool IsEmptyWave(int row, int column)
+        {
+            if (IsInside(row, column) && field[row, column] >= 0)
+                return true;
+            else return false;
+        }
     }
-}
 }

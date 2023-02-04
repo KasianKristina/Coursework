@@ -38,6 +38,8 @@ namespace Classes
             GameField = new Field(8, 8);
             player1 = new Player(Color.White, ref GameField);
             player2 = new Player(Color.Black, ref GameField);
+            player1.Сompetitor = player2;
+            player2.Сompetitor = player1;
         }
 
         public void Strategy1()
@@ -47,6 +49,7 @@ namespace Classes
                 player1.StrategySimple(motion);
                 player2.StrategySimple(motion);
                 motion++;
+                Draw();
             }
         }
 
@@ -100,43 +103,23 @@ namespace Classes
         public bool TwoWave(Field copy)
         {
             Field cMap = Function.CreateWave(0, 4, 7, 4, true, copy);
+            //  TODO Фиксить баг
+            Console.WriteLine("Первый непересекающийся путь");
             int result = cMap[7, 4];
+            cMap.Draw();
             if (result == -6)
                 return false;
+            
             Function.Search(7, 4, result, ref cMap, true);
+            cMap.Draw();
             cMap = Function.CreateWave(0, 4, 7, 4, true, cMap);
+
+            Console.WriteLine("Второй непересекающийся путь");
+            cMap.Draw();
             result = cMap[7, 4];
             if (result == -6)
                 return false;
             return true;
         }
-
-        // проверка: клетка - не стена
-        
-
-        
-        
-
-
-        
-
-        
-
-        // пат
-        public bool Stalemate(int x_king, int y_king, int x_queen, int y_queen,
-            int x_king_opponent, int y_king_opponent, Player player,
-            int x_queen_next, int y_queen_next, bool flag)
-        {
-            if (OpportunityToMakeMoveKing(x_king, y_king, x_king_opponent, y_king_opponent, player, motion) || 
-                OpportunityToMakeMoveQueen(x_queen, y_queen, x_queen_next, y_queen_next, motion, flag))
-                return false;
-            else return true;
-        }
-
-        
-
-       
-
-        
     }
 }

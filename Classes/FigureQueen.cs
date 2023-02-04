@@ -10,20 +10,27 @@ namespace Classes
     {
         public FigureQueen(ref Field GameField, Color color)
         {
-            if (color != Color.Black || color != Color.White)
+            if (color != Color.Black && color != Color.White)
                 throw new Exception("color black or white");
             this.GameField = GameField;
             if (color == Color.White)
             {
                 this.Id = -2;
                 GameField[0, 3] = this.Id;
+                offset = new Position(0, 3);
             }
             else
             {
                 this.Id = -4;
                 GameField[7, 3] = this.Id;
+                offset = new Position(7, 3);
             }
             this.Color = color;
+        }
+
+        public void RandomMove()
+        {
+
         }
 
         // проверка, что ферзь может сходить
@@ -43,7 +50,7 @@ namespace Classes
                 return true;
             else if (QueenIsNotLocked(x, y))
             {
-                GameOver = true;
+                //GameOver = true;
                 return false;
             }
             else return true;

@@ -15,8 +15,7 @@ namespace Classes
         protected Color Color { get; set; }
         public Figure()
         {
-            offset = new Position(StartOffset.Row, StartOffset.Column);
-            //this.GameField = GameField;
+            
         }
 
         // метод перемещения, который перемещает блок на заданное количество строк и столбцов

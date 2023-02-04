@@ -12,17 +12,13 @@ namespace Coursework
         static void Main(string[] args)
         {
             DynamicField field = new DynamicField();
-
-            //field.MoveDetailRight();
-            //field.startKing.Move();
+            
             field.Walls();
-            field.Wave(0,4,7,4);
+            // field.Strategy1();
             field.Draw();
+
+            Test.checkfun();
             Console.ReadKey();
         }
-
-      
     }
-
-
 }
