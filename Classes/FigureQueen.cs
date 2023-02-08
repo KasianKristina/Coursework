@@ -30,7 +30,22 @@ namespace Classes
 
         public void RandomMove()
         {
-
+            if (GameField.IsEmpty(offset.Row - 1, offset.Column + 1))
+            {
+                offset.Row = offset.Row - 1;
+                offset.Column = offset.Column + 1;
+            }
+            else 
+            if (GameField.IsEmpty(offset.Row, offset.Column + 1))
+            {
+                offset.Column = offset.Column + 1;
+            }
+            else
+            if (GameField.IsEmpty(offset.Row + 1, offset.Column + 1))
+            {
+                offset.Row = offset.Row + 1;
+                offset.Column = offset.Column + 1;
+            }
         }
 
         // проверка, что ферзь может сходить

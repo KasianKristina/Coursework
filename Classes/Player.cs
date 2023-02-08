@@ -66,9 +66,7 @@ namespace Classes
                 }
             }
             if (fx == -100)
-                queen.RandomMove();
-            // TODO счисть -7 
-            
+                queen.MoveDetailLeft();
         }
         public bool checkXodKing(int x, int y, int motion)
         {
@@ -99,18 +97,18 @@ namespace Classes
                     for (int i = queenCol - 1; i > kingCol; i--)
                     {
                         if (GameField[queenRow, i] < 0 & GameField[queenRow, i] >= -5)
-                            return false;
+                            return true;
                     }
-                    return true;
+                    return false;
                 }
                 else
                 {
                     for (int i = queenCol + 1; i < kingCol; i++)
                     {
                         if (GameField[queenRow, i] < 0 & GameField[queenRow, i] >= -5)
-                            return false;
+                            return true;
                     }
-                    return true;
+                    return false;
                 }
 
 
@@ -120,18 +118,18 @@ namespace Classes
                     for (int i = queenRow - 1; i > kingRow; i--)
                     {
                         if (GameField[i, queenCol] < 0 & GameField[i, queenCol] >= -5)
-                            return false;
+                            return true;
                     }
-                    return true;
+                    return false;
                 }
                 else
                 {
                     for (int i = queenRow + 1; i < kingRow; i++)
                     {
                         if (GameField[i, queenCol] < 0 & GameField[i, queenCol] >= -5)
-                            return false;
+                            return true;
                     }
-                    return true;
+                    return false;
                 }
             // Check if king is in the same diagonal as queen
             int rowDiff = Math.Abs(queenRow - kingRow);
@@ -150,7 +148,7 @@ namespace Classes
                     {
                         if (GameField[queenRow + i * rowStep, queenCol + i * columnStep] < 0 &
                             GameField[queenRow + i * rowStep, queenCol + i * columnStep] >= -5 )
-                            return false;
+                            return true;
                     }
                 }
                 else
@@ -163,12 +161,12 @@ namespace Classes
                     {
                         if (GameField[queenRow + i * rowStep, queenCol + i * columnStep] < 0 &
                             GameField[queenRow + i * rowStep, queenCol + i * columnStep] >= -5)
-                                return false;
+                                return true;
                     }
                 }
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
         public void StrategySimple(int motion)
@@ -176,18 +174,23 @@ namespace Classes
             Console.WriteLine("Ходит {0} ", Color);
             if (motion % 6 == 0)
             {
-                //queen.MoveDetailLeft
+                queen.MoveDetailLeft();
             }
             else
             {
                 if (Color == Color.White)
                 {
-                    
-                    Wave(king.offset.Row, king.offset.Column, 7, 4, king,motion);
+                    if (king.offset.Row == 7 && king.offset.Column == 4)
+                        Console.WriteLine("Finish. White is win");
+                    else 
+                        Wave(king.offset.Row, king.offset.Column, 7, 4, king,motion);
                 }
                 else
                 {
-                    Wave(king.offset.Row, king.offset.Column, 0, 4, king,motion);
+                    if (king.offset.Row == 0 && king.offset.Column == 4)
+                        Console.WriteLine("Finish. Black is win");
+                    else 
+                        Wave(king.offset.Row, king.offset.Column, 0, 4, king,motion);
                 }
             }
         }

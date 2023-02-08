@@ -14,10 +14,10 @@ namespace Coursework
             DynamicField field = new DynamicField();
             
             field.Walls();
-            // field.Strategy1();
+            field.Strategy1();
             field.Draw();
 
-            Test.checkfun();
+            // Test.checkfun();
             Console.ReadKey();
         }
     }

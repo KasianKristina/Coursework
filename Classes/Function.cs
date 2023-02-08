@@ -8,7 +8,6 @@ namespace Classes
 {
     class Function
     {
-
         public static void PortimGameField(ref Field GameField, Player competitor)
         {
             BlocksWay(competitor.queen.offset.Row, competitor.queen.offset.Column, ref GameField);
