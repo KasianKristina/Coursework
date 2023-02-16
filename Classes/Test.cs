@@ -20,8 +20,8 @@ namespace Classes
             // player1.queen.MoveBlock(3, 4);
             player2.queen.MoveBlock(3, 1);
             GameField.Draw();
-            bool check = player1.CheckQueenAttack(player1.Сompetitor.queen.offset.Row, player1.Сompetitor.queen.offset.Column, player2.Сompetitor.king.offset.Row, player2.Сompetitor.king.offset.Column);
-            Console.WriteLine(check);
+           // bool check = player1.Сompetitor.queen.CheckQueenAttack(player2.Сompetitor.king.offset.Row, player2.Сompetitor.king.offset.Column);
+            //Console.WriteLine(check);
         }
     }
 }

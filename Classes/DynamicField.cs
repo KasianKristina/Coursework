@@ -47,16 +47,25 @@ namespace Classes
             while (!IsGameOver())
             {
                 player1.StrategySimple(motion);
+                if (IsGameOver())
+                    break;
                 player2.StrategySimple(motion);
                 motion++;
                 Draw();
             }
+            Console.WriteLine("qwedcvfretyr");
+            Draw();
         }
 
         public bool IsGameOver()
         {
             if ((GameField[0, 4] == -3) || (GameField[7, 4] == -1))
+            {
+                if (GameField[0, 4] == -3)
+                    Console.WriteLine("Победил белый");
+                else Console.WriteLine("Победил черный");
                 return true;
+            }
             return false;
         }
 
@@ -70,6 +79,7 @@ namespace Classes
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("**********");
         }
 
         public void Walls()
