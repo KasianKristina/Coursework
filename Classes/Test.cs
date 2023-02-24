@@ -16,12 +16,12 @@ namespace Classes
             player1.Сompetitor = player2;
             player2.Сompetitor = player1;
             
-            // player1.king.MoveBlock(7, 6);
-            // player1.queen.MoveBlock(3, 4);
+             player1.king.MoveBlock(7, 1);
+            player1.queen.MoveBlock(5, 1);
             player2.queen.MoveBlock(3, 1);
             GameField.Draw();
-           // bool check = player1.Сompetitor.queen.CheckQueenAttack(player2.Сompetitor.king.offset.Row, player2.Сompetitor.king.offset.Column);
-            //Console.WriteLine(check);
+            bool check = player1.Сompetitor.queen.CheckQueenAttack(player2.queen.offset.Row, player2.queen.offset.Column, player2.Сompetitor.king.offset.Row, player2.Сompetitor.king.offset.Column);
+            Console.WriteLine(check);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Classes
                 motion++;
                 Draw();
             }
-            Console.WriteLine("qwedcvfretyr");
+            Console.WriteLine("Конец игры");
             Draw();
         }
 
@@ -62,8 +62,13 @@ namespace Classes
             if ((GameField[0, 4] == -3) || (GameField[7, 4] == -1))
             {
                 if (GameField[0, 4] == -3)
-                    Console.WriteLine("Победил белый");
-                else Console.WriteLine("Победил черный");
+                    Console.WriteLine("Победил черный");
+                else Console.WriteLine("Победил белый");
+                return true;
+            }
+            if (player1.Pat || player2.Pat)
+            {
+                Console.WriteLine("Ничья");
                 return true;
             }
             return false;

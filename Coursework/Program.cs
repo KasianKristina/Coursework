@@ -15,9 +15,9 @@ namespace Coursework
             
             field.Walls();
             field.Strategy1();
-            //field.Draw();
+            field.Draw();
 
-            // Test.checkfun();
+            //Test.checkfun();
             Console.ReadKey();
         }
     }

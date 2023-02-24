@@ -202,7 +202,38 @@ namespace Classes
                     x = x - 1;
                     if (wall)
                         cMap[x, y] = -5;
-
+                }
+                else if (cMap.IsEmptyWave(x + 1, y + 1) && cMap[x + 1, y + 1] == result - 1)
+                {
+                    result = cMap[x + 1, y + 1];
+                    x = x + 1;
+                    y = y + 1;
+                    if (wall)
+                        cMap[x, y] = -5;
+                }
+                else if (cMap.IsEmptyWave(x + 1, y - 1) && cMap[x + 1, y - 1] == result - 1)
+                {
+                    result = cMap[x + 1, y - 1];
+                    x = x + 1;
+                    y = y - 1;
+                    if (wall)
+                        cMap[x, y] = -5;
+                }
+                else if (cMap.IsEmptyWave(x - 1, y - 1) && cMap[x - 1, y - 1] == result - 1)
+                {
+                    result = cMap[x - 1, y - 1];
+                    x = x - 1;
+                    y = y - 1;
+                    if (wall)
+                        cMap[x, y] = -5;
+                }
+                else if (cMap.IsEmptyWave(x - 1, y + 1) && cMap[x - 1, y + 1] == result - 1)
+                {
+                    result = cMap[x - 1, y + 1];
+                    x = x - 1;
+                    y = y + 1;
+                    if (wall)
+                        cMap[x, y] = -5;
                 }
                 else
                 {
@@ -240,7 +271,6 @@ namespace Classes
                         cMap[x, y] = -5;//индикатор стены
                     else
                         cMap[x, y] = -6;//индикатор еще не ступали сюда
-
                 }
             }
             cMap[7, 4] = -6;
@@ -264,6 +294,14 @@ namespace Classes
                                 cMap[x, y + 1] = step + 1;
                             if (x + 1 < MapY && cMap[x + 1, y] != -5 && cMap[x + 1, y] == -6)
                                 cMap[x + 1, y] = step + 1;
+                            if (x + 1 < MapY && y + 1 < MapY && cMap[x + 1, y + 1] != -5 && cMap[x + 1, y + 1] == -6)
+                                cMap[x + 1, y + 1] = step + 1;
+                            if (x + 1 < MapY && y - 1 >= 0 && cMap[x + 1, y - 1] != -5 && cMap[x + 1, y - 1] == -6)
+                                cMap[x + 1, y - 1] = step + 1;
+                            if (x - 1 >= 0 && y - 1 >= 0 && cMap[x - 1, y - 1] != -5 && cMap[x - 1, y - 1] == -6)
+                                cMap[x - 1, y - 1] = step + 1;
+                            if (x - 1 >= 0 && y + 1 < MapY && cMap[x - 1, y + 1] != -5 && cMap[x - 1, y + 1] == -6)
+                                cMap[x - 1, y + 1] = step + 1;
                         }
 
                         if (cMap[finishX, finishY] != -6 && cMap[finishX, finishY] != -5)//решение найдено

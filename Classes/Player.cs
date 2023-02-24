@@ -13,7 +13,8 @@ namespace Classes
         public Color Color;
         public Field GameField;
         public Player Сompetitor { get; set; }
-
+        public bool Pat = false;
+        
         public Player(Color color, ref Field GameField)
         {
             this.Color = color;
@@ -26,9 +27,6 @@ namespace Classes
         public void Wave(int startX, int startY, int finishX, int finishY, FigureKing figure, int motion)
         {
             int result, fx, fy, x, y;
-
-            //Function.PortimGameField(ref GameField, Сompetitor);
-            //GameField.Draw();
             while (true)
             {
                 Field cMap = Function.CreateWave(startX, startY, finishX, finishY, false, GameField);
@@ -39,17 +37,42 @@ namespace Classes
                 cMap.Draw();
                 (fx, fy) = Function.Search(x, y, result, ref cMap, false);
 
-                if (fx == -100)
-                    break;
-
-                if (checkXodKing(fx, fy, motion))
+                if (fx != -100 && checkXodKing(fx, fy, motion))
                 {
                     figure.MoveBlock(fx, fy);
-
                     break;
                 }
                 else
                 {
+                    if (fx == -100 || (fx, fy) == (0, 4) || (fx, fy) == (7, 4))
+                    {
+                        List<Position> list = new List<Position> { 
+                            new Position(0, 1), 
+                            new Position(0, -1), 
+                            new Position(1, 0),
+                            new Position(1, 1), 
+                            new Position(1, -1), 
+                            new Position(-1, 0), 
+                            new Position(-1, 1), 
+                            new Position(-1, 1)
+                        };
+                        while(list.Count != 0)
+                        {
+                            Position pos = king.RandomXodKing(list);
+                            if (GameField.IsInside(king.offset.Row + pos.Row, king.offset.Column + pos.Column) &&
+                                checkXodKing(king.offset.Row + pos.Row, king.offset.Column + pos.Column, motion))
+                            {
+                                figure.MoveBlock(king.offset.Row + pos.Row, king.offset.Column + pos.Column);
+                                fx = pos.Row;
+                                break;
+                            }
+                            else
+                            list.Remove(pos);
+                        }
+                        if (list.Count == 0)
+                            fx = -100;
+                        break;
+                    }
                     GameField[fx, fy] = -7;
                 }
 
@@ -65,17 +88,25 @@ namespace Classes
                     }
                 }
             }
+
             if (fx == -100)
-                queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
+            {
+                bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
+                if (check == false)
+                {
+                    Console.WriteLine("пат");
+                    Pat = true;
+                }
+            }
         }
         public bool checkXodKing(int x, int y, int motion)
         {
             // TODO добавить другие условия
-            if (Сompetitor.queen.CheckQueenAttack(Сompetitor.queen.offset.Row, Сompetitor.queen.offset.Column, x, y) &&
+            if (!Сompetitor.queen.CheckQueenAttack(Сompetitor.queen.offset.Row, Сompetitor.queen.offset.Column, x, y) ||
                king.AdjacentPosition(x, y,Сompetitor.king.offset.Row, Сompetitor.king.offset.Column))
-               return true;  
+               return false;
             else
-               return false;   
+               return true;   
         }
         // проверка: ферзь не может делать шах королю
         public bool CheckKingAttack(int KingComRow, int KingComCol, int kingRow, int kingCol)
@@ -91,7 +122,24 @@ namespace Classes
             Console.WriteLine("Ходит {0} ", Color);
             if (motion % 6 == 0)
             {
-                queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
+                bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
+                if (check == false)
+                {
+                    if (Color == Color.White)
+                    {
+                        if (king.offset.Row == 7 && king.offset.Column == 4)
+                            Console.WriteLine("Finish. White is win");
+                        else
+                            Wave(king.offset.Row, king.offset.Column, 7, 4, king, motion);
+                    }
+                    else
+                    {
+                        if (king.offset.Row == 0 && king.offset.Column == 4)
+                            Console.WriteLine("Finish. Black is win");
+                        else
+                            Wave(king.offset.Row, king.offset.Column, 0, 4, king, motion);
+                    }
+                }
             }
             else
             {

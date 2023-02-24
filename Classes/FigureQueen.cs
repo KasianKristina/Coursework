@@ -28,42 +28,113 @@ namespace Classes
             this.Color = color;
         }
 
-        public void RandomMove(int kingRow, int kingCol)
+        public void testiki(List<Position> list)
         {
-            //if (GameField.IsEmpty(offset.Row - 1, offset.Column + 1) && !CheckQueenAttack(offset.Row - 1, offset.Column + 1, kingRow, kingCol))
-            //{
-            //    this.MoveBlock(offset.Row - 1, offset.Column + 1);
-            //}
-            //else 
-            //if (GameField.IsEmpty(offset.Row, offset.Column + 1) && !CheckQueenAttack(offset.Row, offset.Column + 1, kingRow, kingCol))
-            //{
-            //    this.MoveBlock(offset.Row, offset.Column + 1);
-            //}
-            //else
-            //if (GameField.IsEmpty(offset.Row + 1, offset.Column + 1) && !CheckQueenAttack(offset.Row + 1, offset.Column + 1, kingRow, kingCol))
-            //{
-            //    this.MoveBlock(offset.Row + 1, offset.Column + 1);
-            //}
-            Random random = new Random();
-            int x, w, y;
-            while (true)
+            for (int i = 0; i < list.Count; i++)
             {
-                x = random.Next(0, 8);
-                if (x != offset.Row)
-                    break;
+                Console.WriteLine(list[i].Row + " " + list[i].Column);
             }
-            w = Math.Abs(offset.Row - offset.Column);
-            y = Math.Abs(w - x);
-            this.MoveBlock(x, y);
         }
 
-        // true - если бьет ферзь и false - не бьет
+        public bool RandomMove(int kingRow, int kingCol)
+        {
+            int position;
+            List<Position> list = getAllPosition(offset.Row, offset.Column, kingRow, kingCol);
+            testiki(list);
+            Random random = new Random();
+            while (true)
+            {
+                if (list.Count == 0)
+                    return false;
+                else
+                {
+                    position = random.Next(list.Count);
+                    if (CheckQueenAttack(list[position].Row, list[position].Column, kingRow, kingCol))
+                        break;
+                }
+            }
+            this.MoveBlock(list[position].Row, list[position].Column);
+            return true;
+        }
+
+        // возможные позиции королевы
+        public List<Position> getAllPosition(int x, int y, int kingRow, int kingCol)
+        {
+            List<Position> list = new List<Position>();
+            // иду вниз
+            for (int i = x + 1; i < 8; i++)
+            {
+                if (CheckQueenAttack(i, y, kingRow, kingCol))
+                {
+                    if (GameField[i, y] == 0)
+                        list.Add(new Position(i, y));
+                    else break;
+                }
+            }
+            // иду вверх
+            for (int i = x - 1; i > 0; i--)
+            {
+                if (CheckQueenAttack(i, y, kingRow, kingCol))
+                {
+                    if (GameField[i, y] == 0)
+                        list.Add(new Position(i, y));
+                    else break;
+                }
+            }
+            // иду в правый нижний угол
+            int rowStep = 1;
+            int columnStep = 1;
+            for (int i = 1; i < 8; i++)
+            {
+                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
+                {
+                    if (GameField[x + i * rowStep, y + i * columnStep] == 0)
+                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
+                    else break;
+                }
+            }
+            // иду в левый нижний угол
+            rowStep = 1;
+            columnStep = -1;
+            for (int i = 1; i < 8; i++)
+            {
+                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) &&  CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
+                {
+                    if (GameField[x + i * rowStep, y + i * columnStep] == 0)
+                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
+                    else break;
+                }
+            }
+            // иду в правый верхний угол
+            rowStep = -1;
+            columnStep = 1;
+            for (int i = 1; i < 8; i++)
+            {
+                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
+                {
+                    if (GameField[x + i * rowStep, y + i * columnStep] == 0)
+                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
+                    else break;
+                }
+            }
+            // иду в левый верхний угол
+            rowStep = -1;
+            columnStep = -1;
+            for (int i = 1; i < 8; i++)
+            {
+                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
+                {
+                    if (GameField[x + i * rowStep, y + i * columnStep] == 0)
+                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
+                    else break;
+                }
+            }
+            return list;
+        }
+
+        // true - не бьет, false - бьет
         public bool CheckQueenAttack(int queenRow, int queenCol, int kingRow, int kingCol)
         {
-            // int queenRow = offset.Row;
-            // int queenCol = offset.Column;
-            // Row - x Col - y
-            // Check if king is in the same row or column as queen
             if (queenRow == kingRow)
                 if (queenCol > kingCol)
                 {

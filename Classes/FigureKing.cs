@@ -28,8 +28,6 @@ namespace Classes
             this.Color = color;
         }
 
-      
-
         // проверка, что король может сходить
         public bool OpportunityToMakeMoveKing(int x, int y, int xOpponent, int yOpponent, int motion)
         {
@@ -62,6 +60,7 @@ namespace Classes
 
         // проверка: король находится в смежной позиции с королем противника
         // x, y - координаты короля; xOpponent, yOpponent - координаты короля противника
+        // возвращаем true, если позиция смежная
         public bool AdjacentPosition(int x, int y, int xOpponent, int yOpponent)
         {
             if ((x, y) == (xOpponent - 1, yOpponent) ||
@@ -73,11 +72,19 @@ namespace Classes
                 (x, y) == (xOpponent, yOpponent + 1) ||
                 (x, y) == (xOpponent - 1, yOpponent + 1) )
             {
-
-                return false;
+                return true;
             }
-            else return true;
+            else return false;
         }
-
+        
+        // x, y - текущая позиция короля
+        public Position RandomXodKing(List<Position> list)
+        {
+            int position;
+            Random random = new Random();
+            position = random.Next(list.Count);
+            //List<Position> list = new List<Position> { new Position(0, 1), new Position(0, -1) };
+            return new Position(list[position].Row, list[position].Column);
+        }
     }
 }
