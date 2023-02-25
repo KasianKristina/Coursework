@@ -71,7 +71,7 @@ namespace Classes
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine('*' * 10);
+            Console.WriteLine("************************");
         }
 
         // находится ли клетка внутри поля
@@ -91,6 +91,7 @@ namespace Classes
             else return false;
         }
 
+        // пустая ли клетка (для проверки на карте cMap, где расставлены значения путей)
         public bool IsEmptyWave(int row, int column)
         {
             if (IsInside(row, column) && field[row, column] >= 0)

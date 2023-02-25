@@ -19,16 +19,10 @@ namespace Classes
             set
             {
                 currentDetail = value;
-                // метод сброса вызывается для установки 
-                // правильного начального положения и поворота
-                currentDetail.Reset();
             }
         }
 
         public Field GameField;
-        public bool GameOver { get; set; }
-        public int Message { get; private set; }
-       
         public Player player1;
         public Player player2;
         int motion = 1;
@@ -54,7 +48,6 @@ namespace Classes
                 Draw();
             }
             Console.WriteLine("Конец игры");
-            Draw();
         }
 
         public bool IsGameOver()
@@ -62,8 +55,8 @@ namespace Classes
             if ((GameField[0, 4] == -3) || (GameField[7, 4] == -1))
             {
                 if (GameField[0, 4] == -3)
-                    Console.WriteLine("Победил черный");
-                else Console.WriteLine("Победил белый");
+                    Console.WriteLine("Победили черные фигуры");
+                else Console.WriteLine("Победили белые фигуры");
                 return true;
             }
             if (player1.Pat || player2.Pat)
@@ -84,7 +77,7 @@ namespace Classes
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("**********");
+            Console.WriteLine("********");
         }
 
         public void Walls()
@@ -96,7 +89,7 @@ namespace Classes
                 copy = GameField.Copy();
                 int i = 1;
                 copy.Draw();
-                int number = random.Next(1, 31);
+                int number = random.Next(20, 31);
                 Console.WriteLine(number);
                 while (i <= number)
                 {
@@ -115,10 +108,11 @@ namespace Classes
             GameField.Clone(copy);
         }
 
+        // поиск двух непересекающихся путей
+        // первый найденный путь отмечаем -5 (стены)
         public bool TwoWave(Field copy)
         {
             Field cMap = Function.CreateWave(0, 4, 7, 4, true, copy);
-            //  TODO Фиксить баг
             Console.WriteLine("Первый непересекающийся путь");
             int result = cMap[7, 4];
             cMap.Draw();

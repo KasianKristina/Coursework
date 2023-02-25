@@ -13,10 +13,6 @@ namespace Classes
         public Position offset { get; set; }
         protected Field GameField { get; set; }
         protected Color Color { get; set; }
-        public Figure()
-        {
-            
-        }
 
         // метод перемещения, который перемещает блок на заданное количество строк и столбцов
         public void Move(int rows, int columns)
@@ -27,6 +23,7 @@ namespace Classes
             GameField[offset.Row, offset.Column] = Id;
         }
 
+        // метод премещения, который перемещает блок на заданную позицию
         public void MoveBlock(int rows, int columns)
         {
             if (GameField[rows, columns] >= 0)
@@ -36,58 +33,6 @@ namespace Classes
                 offset.Column = columns;
                 GameField[offset.Row, offset.Column] = Id;
             }
-        }
-
-        private bool IsDetailFit(int row, int column)
-        {
-            if (!GameField.IsEmpty(this.offset.Row, this.offset.Column))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public void MoveDetailLeft()
-        {
-            //this.Move(0, -1);
-            if (GameField.IsEmpty(this.offset.Row, this.offset.Column - 1))
-            {
-                this.Move(0, -1);
-            }
-        }
-
-        public void MoveDetailRight()
-        {
-            //this.Move(0, 1);
-
-            if (GameField.IsEmpty(this.offset.Row, this.offset.Column + 1))
-            {
-                this.Move(0, 1);
-            }
-        }
-
-        public void MoveDetailDown()
-        {
-            if (GameField.IsEmpty(this.offset.Row + 1, this.offset.Column))
-            {
-                this.Move(1, 0);
-                GameField.Draw();
-            }
-        }
-
-        public void MoveDetailUp()
-        {
-            if (GameField.IsEmpty(this.offset.Row - 1, this.offset.Column))
-            {
-                this.Move(-1, 0);
-            }
-        }
-
-        // метод сброса, который сбрасывает вращение и положение
-        public void Reset()
-        {
-            offset.Row = StartOffset.Row;
-            offset.Column = StartOffset.Column;
         }
     }
 }

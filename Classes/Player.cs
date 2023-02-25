@@ -46,17 +46,16 @@ namespace Classes
                 {
                     if (fx == -100 || (fx, fy) == (0, 4) || (fx, fy) == (7, 4))
                     {
-                        List<Position> list = new List<Position> { 
-                            new Position(0, 1), 
-                            new Position(0, -1), 
-                            new Position(1, 0),
-                            new Position(1, 1), 
-                            new Position(1, -1), 
-                            new Position(-1, 0), 
-                            new Position(-1, 1), 
-                            new Position(-1, 1)
-                        };
-                        while(list.Count != 0)
+                        List<Position> list = new List<Position>();
+                        list.Add(new Position(0, 1));
+                        list.Add(new Position(0, -1)); 
+                        list.Add(new Position(1, 0));
+                        list.Add(new Position(1, 1));
+                        list.Add(new Position(1, -1));
+                        list.Add(new Position(-1, 0));
+                        list.Add(new Position(-1, 1));
+                        list.Add(new Position(-1, -1));
+                        while (list.Any())
                         {
                             Position pos = king.RandomXodKing(list);
                             if (GameField.IsInside(king.offset.Row + pos.Row, king.offset.Column + pos.Column) &&
@@ -103,18 +102,11 @@ namespace Classes
         {
             // TODO добавить другие условия
             if (!Сompetitor.queen.CheckQueenAttack(Сompetitor.queen.offset.Row, Сompetitor.queen.offset.Column, x, y) ||
-               king.AdjacentPosition(x, y,Сompetitor.king.offset.Row, Сompetitor.king.offset.Column))
+               king.AdjacentPosition(x, y,Сompetitor.king.offset.Row, Сompetitor.king.offset.Column) ||
+               !GameField.IsEmptyWave(x, y))
                return false;
             else
                return true;   
-        }
-        // проверка: ферзь не может делать шах королю
-        public bool CheckKingAttack(int KingComRow, int KingComCol, int kingRow, int kingCol)
-        {
-            
-            
-            return true;
-
         }
 
         public void StrategySimple(int motion)

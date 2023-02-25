@@ -28,19 +28,10 @@ namespace Classes
             this.Color = color;
         }
 
-        public void testiki(List<Position> list)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                Console.WriteLine(list[i].Row + " " + list[i].Column);
-            }
-        }
-
         public bool RandomMove(int kingRow, int kingCol)
         {
             int position;
             List<Position> list = getAllPosition(offset.Row, offset.Column, kingRow, kingCol);
-            testiki(list);
             Random random = new Random();
             while (true)
             {

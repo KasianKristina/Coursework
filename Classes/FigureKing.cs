@@ -83,8 +83,7 @@ namespace Classes
             int position;
             Random random = new Random();
             position = random.Next(list.Count);
-            //List<Position> list = new List<Position> { new Position(0, 1), new Position(0, -1) };
-            return new Position(list[position].Row, list[position].Column);
+            return list[position];
         }
     }
 }

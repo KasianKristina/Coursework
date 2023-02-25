@@ -171,6 +171,8 @@ namespace Classes
             }
         }
 
+        // поиск оптимальной ячейки, в которую нужно идти
+        // в cMap расставлены значения путей от короля игрока до исходной позиции короля соперника
         public static (int fx, int fy) Search(int x, int y, int result, ref Field cMap, bool wall)
         {
             while (result != 1)
@@ -237,24 +239,15 @@ namespace Classes
                 }
                 else
                 {
-                    Console.WriteLine("путь не найден");
+                    Console.WriteLine("оптимальный путь не найден");
                     return (-100, -100);
                 }
             }
             return (x, y);
         }
-        // пат
-/*        public bool Stalemate(int x_king, int y_king, int x_queen, int y_queen,
-            int x_king_opponent, int y_king_opponent, Player player,
-            int x_queen_next, int y_queen_next, bool flag)
-        {
-            if (OpportunityToMakeMoveKing(x_king, y_king, x_king_opponent, y_king_opponent, player, motion) ||
-                OpportunityToMakeMoveQueen(x_queen, y_queen, x_queen_next, y_queen_next, motion, flag))
-                return false;
-            else return true;
-        }
-*/
 
+        // создание волны
+        // расстановка значений в ячейки до конечной точки
         public static Field CreateWave(int startX, int startY, int finishX, int finishY, bool wall, Field field)
         {
             bool add = true;
@@ -268,9 +261,9 @@ namespace Classes
                 for (y = 0; y < MapY; y++)
                 {
                     if (field[x, y] != -6 && field[x, y] < 0)
-                        cMap[x, y] = -5;//индикатор стены
+                        cMap[x, y] = -5; // индикатор стены
                     else
-                        cMap[x, y] = -6;//индикатор еще не ступали сюда
+                        cMap[x, y] = -6; // индикатор: еще не были здесь
                 }
             }
             cMap[7, 4] = -6;
