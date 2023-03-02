@@ -172,8 +172,8 @@ namespace Classes
         public void StrategyCapture(int motion)
         {
             Console.WriteLine("Ходит {0} ", Color);
-            int motionWhite = 1;
-            int motionBlack = 1;
+            int motionWhite = 0;
+            int motionBlack = 0;
             if ((Color == Color.White && (motionWhite >= 6) ||
                 (Color == Color.Black && (motionBlack >= 6))))
             {
