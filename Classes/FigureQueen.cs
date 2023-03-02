@@ -28,6 +28,32 @@ namespace Classes
             this.Color = color;
         }
 
+        public void ObstaclesQueenCheck()
+        {
+            for (int i = offset.Row + 1; i < 8; i++)
+            {
+                GameField[i, offset.Column] = -7;
+            }
+            for (int i = offset.Row - 1; i > 0; i--)
+            {
+                GameField[i, offset.Column] = -7;
+            }
+
+            for (int j = offset.Column + 1; j < 8; j++)
+            {
+                GameField[offset.Row, j] = -7;
+            }
+            for (int j = offset.Column - 1; j > 0; j--)
+            {
+                GameField[offset.Row, j] = -7;
+            }
+
+            int diag = Math.Abs(offset.Row - offset.Column);
+
+        }
+
+
+
         public bool RandomMove(int kingRow, int kingCol)
         {
             int position;
@@ -64,7 +90,7 @@ namespace Classes
                     }
                 }
             }
-            return  false;
+            return false;
         }
 
         // возможные позиции королевы
@@ -108,7 +134,7 @@ namespace Classes
             columnStep = -1;
             for (int i = 1; i < 8; i++)
             {
-                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) &&  CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
+                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
                 {
                     if (GameField[x + i * rowStep, y + i * columnStep] == 0)
                         list.Add(new Position(x + i * rowStep, y + i * columnStep));

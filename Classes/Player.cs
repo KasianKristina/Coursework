@@ -14,6 +14,7 @@ namespace Classes
         public Field GameField;
         public Player Сompetitor { get; set; }
         public bool Pat = false;
+        public int motionColor = 0;
 
         public Player(Color color, ref Field GameField)
         {
@@ -73,6 +74,7 @@ namespace Classes
                         break;
                     }
                     GameField[fx, fy] = -7;
+                    //queen.ObstaclesQueenCheck();
                 }
 
                 cMap.Draw();
@@ -172,26 +174,19 @@ namespace Classes
         public void StrategyCapture(int motion)
         {
             Console.WriteLine("Ходит {0} ", Color);
-            int motionWhite = 0;
-            int motionBlack = 0;
-            if ((Color == Color.White && (motionWhite >= 6) ||
-                (Color == Color.Black && (motionBlack >= 6))))
+            if (motionColor >= 6)
             {
                 bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color);
                 // если true сделать сброс  
-                if (check == true  && Color == Color.White)
-                    motionWhite = 0;
-                if (check == true && Color == Color.Black)
-                    motionBlack = 0;
-                if (check == false)
+                if (check == true)
+                    motionColor = 0;
+                else
                 {
                     bool check2 = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
                     // если true сделать сброс
-                    if (check2 == true && Color == Color.White)
-                        motionWhite = 0;
-                    if (check2 == true && Color == Color.Black)
-                        motionBlack = 0;
-                    if (check2 == false)
+                    if (check2 == true)
+                        motionColor = 0;
+                    else
                     {
                         if (Color == Color.White)
                         {
@@ -199,7 +194,7 @@ namespace Classes
                                 Console.WriteLine("Finish. White is win");
                             else
                             {
-                                motionWhite++;
+                                motionColor++;
                                 Wave(king.offset.Row, king.offset.Column, 7, 4, king, motion, 2);
                             } 
                         }
@@ -209,7 +204,7 @@ namespace Classes
                                 Console.WriteLine("Finish. Black is win");
                             else
                             {
-                                motionBlack++;
+                                motionColor++;
                                 Wave(king.offset.Row, king.offset.Column, 0, 4, king, motion, 2);
                             }
                         }
@@ -219,11 +214,9 @@ namespace Classes
             else
             {
                 bool check3 = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color);
-                if (check3 == true && Color == Color.White)
-                    motionWhite = 0;
-                if (check3 == true && Color == Color.Black)
-                    motionBlack = 0;
-                if (check3 == false)
+                if (check3 == true)
+                    motionColor = 0;
+                else
                 {
                     if (Color == Color.White)
                     {
@@ -231,7 +224,7 @@ namespace Classes
                             Console.WriteLine("Finish. White is win");
                         else
                             {
-                                motionWhite++;
+                                motionColor++;
                                 Wave(king.offset.Row, king.offset.Column, 7, 4, king, motion, 2);
                             }
                     }
@@ -241,7 +234,7 @@ namespace Classes
                             Console.WriteLine("Finish. Black is win");
                         else
                             {
-                                motionBlack++;
+                                motionColor++;
                                 Wave(king.offset.Row, king.offset.Column, 0, 4, king, motion, 2);
                             }
                         }

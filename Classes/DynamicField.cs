@@ -26,8 +26,6 @@ namespace Classes
         public Player player1;
         public Player player2;
         int motion = 1;
-        int motionWhite = 1;
-        int motionBlack = 1;
 
         public DynamicField()
         {
@@ -59,6 +57,7 @@ namespace Classes
                 player1.StrategyCapture(motion);
                 if (IsGameOver())
                     break;
+                Draw();
                 player2.StrategyCapture(motion);
                 motion++;
                 Draw();
