@@ -98,5 +98,12 @@ namespace Classes
                 return true;
             else return false;
         }
+
+        public bool IsWall(int row, int column)
+        {
+            if (IsInside(row, column) && field[row, column] != 0)
+                return true;
+            else return false;
+        }
     }
 }

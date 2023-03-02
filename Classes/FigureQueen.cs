@@ -48,6 +48,25 @@ namespace Classes
             return true;
         }
 
+        public bool ObstacleMove(int kingRow, int kingCol, Color color)
+        {
+            List<Position> listObstacles = getObstaclesPosition(kingRow, kingCol, color);
+            List<Position> listAll = getAllPosition(offset.Row, offset.Column, kingRow, kingCol);
+            for (int i = 0; i < listObstacles.Count; i++)
+            {
+                for (int j = 0; j < listAll.Count; j++)
+                {
+                    if (listAll[j].Row == listObstacles[i].Row &&
+                        listAll[j].Column == listObstacles[i].Column)
+                    {
+                        this.MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
+                        return true;
+                    }
+                }
+            }
+            return  false;
+        }
+
         // возможные позиции королевы
         public List<Position> getAllPosition(int x, int y, int kingRow, int kingCol)
         {
@@ -119,6 +138,33 @@ namespace Classes
                         list.Add(new Position(x + i * rowStep, y + i * columnStep));
                     else break;
                 }
+            }
+            return list;
+        }
+
+        // все позиции для блокировки короля соперника
+        public List<Position> getObstaclesPosition(int kingRow, int kingCol, Color color)
+        {
+            List<Position> list = new List<Position>();
+            int k;
+            if (color == Color.Black)
+                k = -1;
+            else k = 1;
+            // вправо
+            for (int i = kingCol + 1; i < 8; i++)
+            {
+                if (GameField.IsWall(kingRow - k, i))
+                    break;
+                if (GameField.IsInside(kingRow - k, i) && GameField[kingRow - k, i] == 0)
+                    list.Add(new Position(kingRow - k, i));
+            }
+            // влево
+            for (int i = kingCol - 1; i >= 0; i--)
+            {
+                if (GameField.IsWall(kingRow - k, i))
+                    break;
+                if (GameField.IsInside(kingRow - k, i) && GameField[kingRow - k, i] == 0)
+                    list.Add(new Position(kingRow - k, i));
             }
             return list;
         }

@@ -26,6 +26,8 @@ namespace Classes
         public Player player1;
         public Player player2;
         int motion = 1;
+        int motionWhite = 1;
+        int motionBlack = 1;
 
         public DynamicField()
         {
@@ -44,6 +46,20 @@ namespace Classes
                 if (IsGameOver())
                     break;
                 player2.StrategySimple(motion);
+                motion++;
+                Draw();
+            }
+            Console.WriteLine("Конец игры");
+        }
+
+        public void Strategy2()
+        {
+            while (!IsGameOver())
+            {
+                player1.StrategyCapture(motion);
+                if (IsGameOver())
+                    break;
+                player2.StrategyCapture(motion);
                 motion++;
                 Draw();
             }
@@ -89,7 +105,7 @@ namespace Classes
                 copy = GameField.Copy();
                 int i = 1;
                 copy.Draw();
-                int number = random.Next(20, 31);
+                int number = random.Next(1, 31);
                 Console.WriteLine(number);
                 while (i <= number)
                 {
