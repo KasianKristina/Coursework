@@ -219,7 +219,7 @@ namespace Classes
             else
             {
                 bool check3 = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color);
-                if (check3 == true && Color == Color.Black)
+                if (check3 == true && Color == Color.White)
                     motionWhite = 0;
                 if (check3 == true && Color == Color.Black)
                     motionBlack = 0;
