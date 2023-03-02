@@ -31,9 +31,9 @@ namespace Classes
         // проверка, что король может сходить
         public bool OpportunityToMakeMoveKing(int x, int y, int xOpponent, int yOpponent, int motion)
         {
-            if ((motion <= 16 || (motion > 16 && LeaveSquare(x, y))) &&
+            if ((motion <= 16 || (motion > 16 && LeaveSquare(x, y, motion))) &&
                 AdjacentPosition(x, y, xOpponent, yOpponent) &&
-                LeaveSquare(x, y) &&
+                LeaveSquare(x, y, motion) &&
                 GameField[x, y] != -5 &&
                 GameField[x, y] != -7)
                 return true;
@@ -42,20 +42,26 @@ namespace Classes
 
         // проверка: король должен покинуть квадрат за 16 ходов и больше не возвращаться в него
         // x, y - позиция короля, которую он займет при передвижении
-        public bool LeaveSquare(int x, int y)
+        // true - в квадрате, false - не в квадрате
+        public bool LeaveSquare(int x, int y, int motion)
         {
-            int Row = 0;
-            int iterator = 1;
-            if (this.Color == Color.Black)
-            {
-                Row += 7;
-                iterator = -1;
-            }
-            if ((x, y) == (Row, 3) || (x, y) == (Row + iterator * 2, 3) || (x, y) == (Row + iterator * 3, 3) ||
-                 (x, y) == (Row, 4) || (x, y) == (Row + iterator * 2, 4) || (x, y) == (Row + iterator * 3, 4) ||
-                 (x, y) == (Row, 5) || (x, y) == (Row + iterator * 2, 5) || (x, y) == (Row + iterator * 3, 5))
+            if (motion <= 16)
                 return false;
-            return true;
+            else
+            {
+                int Row = 0;
+                int iterator = 1;
+                if (this.Color == Color.Black)
+                {
+                    Row += 7;
+                    iterator = -1;
+                }
+                if ((x, y) == (Row, 3) || (x, y) == (Row + iterator * 2, 3) || (x, y) == (Row + iterator * 3, 3) ||
+                     (x, y) == (Row, 4) || (x, y) == (Row + iterator * 2, 4) || (x, y) == (Row + iterator * 3, 4) ||
+                     (x, y) == (Row, 5) || (x, y) == (Row + iterator * 2, 5) || (x, y) == (Row + iterator * 3, 5))
+                    return true;
+                return false;
+            }
         }
 
         // проверка: король находится в смежной позиции с королем противника
@@ -77,7 +83,6 @@ namespace Classes
             else return false;
         }
         
-        // x, y - текущая позиция короля
         public Position RandomXodKing(List<Position> list)
         {
             int position;

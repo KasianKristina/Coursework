@@ -116,9 +116,9 @@ namespace Classes
         }
         public bool checkXodKing(int x, int y, int motion)
         {
-            // TODO добавить другие условия
             if (!Сompetitor.queen.CheckQueenAttack(Сompetitor.queen.offset.Row, Сompetitor.queen.offset.Column, x, y) ||
                king.AdjacentPosition(x, y, Сompetitor.king.offset.Row, Сompetitor.king.offset.Column) ||
+               king.LeaveSquare(x, y, motion) ||
                !GameField.IsEmptyWave(x, y))
                 return false;
             else
