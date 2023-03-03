@@ -93,6 +93,7 @@ namespace Classes
             return false;
         }
 
+        // TODO ПОФИКСИТЬ
         // возможные позиции королевы
         public List<Position> getAllPosition(int x, int y, int kingRow, int kingCol)
         {

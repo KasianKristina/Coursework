@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Classes
 {
@@ -147,6 +149,32 @@ namespace Classes
             return true;
         }
 
+        //public static bool SearchFirst(int result, int x, int y, ref Field cMap, bool wall)
+        //{
+        //    if (cMap.IsEmptyWave(x, y) && cMap[x, y] == result - 1)
+        //    {
+        //        result = cMap[x, y - 1];
+        //        y = y - 1;
+        //        if (wall)
+        //            cMap[x, y] = -5;
+        //    }
+        //    List<Position> list = new List<Position>() {
+        //                    new Position(0, 1),
+        //                    new Position(0, -1),
+        //                    new Position(1, 0),
+        //                    new Position(1, 1),
+        //                    new Position(1, -1),
+        //                    new Position(-1, 0),
+        //                    new Position(-1, 1),
+        //                    new Position(-1, -1),
+        //                };
+        //    foreach (Position pos in list)
+        //    {
+        //        if (GameField.IsInside(king.offset.Row + pos.Row, king.offset.Column + pos.Column) &&
+        //                        checkXodKing(king.offset.Row + pos.Row, king.offset.Column + pos.Column, motion))
+        //    }
+        //    return true;
+        //}
 
         // TODO убрать дублирование
         // поиск позиции, на которую нужно идти королю
