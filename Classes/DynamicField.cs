@@ -43,6 +43,7 @@ namespace Classes
                 player1.StrategySimple(motion);
                 if (IsGameOver())
                     break;
+                Draw();
                 player2.StrategySimple(motion);
                 motion++;
                 Draw();

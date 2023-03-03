@@ -18,14 +18,14 @@ namespace Classes
                 Id = -1;
                 GameField[0, 4] = Id;
                 offset = new Position(0, 4);
-                startingPosition = new Position(0, 4);
+                endingPosition = new Position(7, 4);
             }
             else
             {
                 Id = -3;
                 GameField[7, 4] = Id;
                 offset = new Position(7, 4);
-                startingPosition = new Position(7, 4);
+                endingPosition = new Position(0, 4);
             }
             Color = color;
         }

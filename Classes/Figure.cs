@@ -13,7 +13,7 @@ namespace Classes
         public Position offset { get; set; }
         protected Field GameField { get; set; }
         protected Color Color { get; set; }
-        public Position startingPosition { get; set; }
+        public Position endingPosition { get; set; }
 
         // метод премещения, который перемещает блок на заданную позицию
         public void MoveBlock(int rows, int columns)

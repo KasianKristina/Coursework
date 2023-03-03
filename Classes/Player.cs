@@ -23,7 +23,7 @@ namespace Classes
             this.GameField = GameField;
             king = new FigureKing(ref GameField, color);
             queen = new FigureQueen(ref GameField, color);
-            posEnd = king.startingPosition;
+            posEnd = king.endingPosition;
         }
 
         public int Wave(int startX, int startY, int finishX, int finishY, FigureKing figure, int motion)
