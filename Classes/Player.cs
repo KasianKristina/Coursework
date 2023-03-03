@@ -57,15 +57,16 @@ namespace Classes
                 {
                     if (fx == -100 || (fx, fy) == (0, 4) || (fx, fy) == (7, 4))
                     {
-                        List<Position> list = new List<Position>();
-                        list.Add(new Position(0, 1));
-                        list.Add(new Position(0, -1));
-                        list.Add(new Position(1, 0));
-                        list.Add(new Position(1, 1));
-                        list.Add(new Position(1, -1));
-                        list.Add(new Position(-1, 0));
-                        list.Add(new Position(-1, 1));
-                        list.Add(new Position(-1, -1));
+                        List<Position> list = new List<Position>() {
+                            new Position(0, 1),
+                            new Position(0, -1),
+                            new Position(1, 0),
+                            new Position(1, 1),
+                            new Position(1, -1),
+                            new Position(-1, 0),
+                            new Position(-1, 1),
+                            new Position(-1, -1),
+                        };
                         while (list.Any())
                         {
                             Position pos = king.RandomXodKing(list);
