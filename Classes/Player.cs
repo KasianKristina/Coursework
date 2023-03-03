@@ -19,34 +19,28 @@ namespace Classes
 
         public Player(Color color, ref Field GameField)
         {
-            this.Color = color;
+            Color = color;
             this.GameField = GameField;
             king = new FigureKing(ref GameField, color);
             queen = new FigureQueen(ref GameField, color);
-            if (color == Color.White)
-            {
-                posEnd = new Position(7, 4);
-            }
-            else
-            {
-                posEnd = new Position(0, 4);
-            }
-
-
+            posEnd = king.startingPosition;
         }
 
-        public int Wave(int startX, int startY, int finishX, int finishY, FigureKing figure, int motion, int strategy)
+        public int Wave(int startX, int startY, int finishX, int finishY, FigureKing figure, int motion)
         {
-            int result, fx, fy, x, y;
+            int result, fx, fy;
+            // int x, y;
             while (true)
             {
-                Field cMap = Function.CreateWave(startX, startY, finishX, finishY, false, GameField);
+                //x = finishX;
+                //y = finishY;
+
+                Field cMap = DynamicField.CreateWave(startX, startY, finishX, finishY, false, GameField);
                 result = cMap[finishX, finishY];
 
-                x = finishX;
-                y = finishY;
-                cMap.Draw();
-                (fx, fy) = Function.Search(x, y, result, ref cMap, false);
+                // cMap.Draw();
+
+                (fx, fy) = DynamicField.Search(finishX, finishY, result, ref cMap, false);
 
                 if (fx != -100 && checkXodKing(fx, fy, motion))
                 {
@@ -126,7 +120,7 @@ namespace Classes
                         Console.WriteLine("Finish. Win is {0} ", Color);
                     else
                     {
-                        if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion, 1))
+                        if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                         {
                             Console.WriteLine("пат");
                             Pat = true;
@@ -140,7 +134,7 @@ namespace Classes
                     Console.WriteLine("Finish. {0} is win", Color);
                 else
                 {
-                    if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion, 1))
+                    if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                     {
                         bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
                         if (check == false)
@@ -167,7 +161,7 @@ namespace Classes
                 }
                 else
                 {
-                    if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion, 2))
+                    if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                     {
                         bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color);
                         if (check)
@@ -201,7 +195,7 @@ namespace Classes
                     check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column);
                     if (check == false)
                     {
-                        if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion, 1))
+                        if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                         {
                             Console.WriteLine("пат");
                             Pat = true;
@@ -217,7 +211,7 @@ namespace Classes
                 }
                 else
                 {
-                    if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion, 2))
+                    if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                     {
                         check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color);
                         if (check)

@@ -15,17 +15,19 @@ namespace Classes
             this.GameField = GameField;
             if (color == Color.White)
             {
-                this.Id = -2;
-                GameField[0, 3] = this.Id;
+                Id = -2;
+                GameField[0, 3] = Id;
                 offset = new Position(0, 3);
+                startingPosition = new Position(0, 3);
             }
             else
             {
-                this.Id = -4;
-                GameField[7, 3] = this.Id;
+                Id = -4;
+                GameField[7, 3] = Id;
                 offset = new Position(7, 3);
+                startingPosition = new Position(7, 3);
             }
-            this.Color = color;
+            Color = color;
         }
 
         public void ObstaclesQueenCheck()
@@ -52,8 +54,6 @@ namespace Classes
 
         }
 
-
-
         public bool RandomMove(int kingRow, int kingCol)
         {
             int position;
@@ -70,7 +70,7 @@ namespace Classes
                         break;
                 }
             }
-            this.MoveBlock(list[position].Row, list[position].Column);
+            MoveBlock(list[position].Row, list[position].Column);
             return true;
         }
 

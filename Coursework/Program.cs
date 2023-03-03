@@ -14,7 +14,7 @@ namespace Coursework
             DynamicField field = new DynamicField();
             
             field.Walls();
-            field.Strategy2();
+            field.Strategy1();
             field.Draw();
 
             //Test.checkfun();

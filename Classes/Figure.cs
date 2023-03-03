@@ -13,15 +13,7 @@ namespace Classes
         public Position offset { get; set; }
         protected Field GameField { get; set; }
         protected Color Color { get; set; }
-
-        // метод перемещения, который перемещает блок на заданное количество строк и столбцов
-        public void Move(int rows, int columns)
-        {
-            GameField[offset.Row, offset.Column] = 0;
-            offset.Row += rows;
-            offset.Column += columns;
-            GameField[offset.Row, offset.Column] = Id;
-        }
+        public Position startingPosition { get; set; }
 
         // метод премещения, который перемещает блок на заданную позицию
         public void MoveBlock(int rows, int columns)

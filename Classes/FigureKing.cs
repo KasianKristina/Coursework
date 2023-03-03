@@ -15,17 +15,19 @@ namespace Classes
             this.GameField = GameField;
             if (color == Color.White)
             {
-                this.Id = -1;
-                GameField[0, 4] = this.Id;
+                Id = -1;
+                GameField[0, 4] = Id;
                 offset = new Position(0, 4);
+                startingPosition = new Position(0, 4);
             }
             else
             {
-                this.Id = -3;
-                GameField[7, 4] = this.Id;
+                Id = -3;
+                GameField[7, 4] = Id;
                 offset = new Position(7, 4);
+                startingPosition = new Position(7, 4);
             }
-            this.Color = color;
+            Color = color;
         }
 
         // проверка, что король может сходить
@@ -51,14 +53,14 @@ namespace Classes
             {
                 int Row = 0;
                 int iterator = 1;
-                if (this.Color == Color.Black)
+                if (Color == Color.Black)
                 {
                     Row += 7;
                     iterator = -1;
                 }
                 if ((x, y) == (Row, 3) || (x, y) == (Row + iterator * 2, 3) || (x, y) == (Row + iterator * 3, 3) ||
-                     (x, y) == (Row, 4) || (x, y) == (Row + iterator * 2, 4) || (x, y) == (Row + iterator * 3, 4) ||
-                     (x, y) == (Row, 5) || (x, y) == (Row + iterator * 2, 5) || (x, y) == (Row + iterator * 3, 5))
+                    (x, y) == (Row, 4) || (x, y) == (Row + iterator * 2, 4) || (x, y) == (Row + iterator * 3, 4) ||
+                    (x, y) == (Row, 5) || (x, y) == (Row + iterator * 2, 5) || (x, y) == (Row + iterator * 3, 5))
                     return true;
                 return false;
             }
@@ -76,13 +78,13 @@ namespace Classes
                 (x, y) == (xOpponent + 1, yOpponent) ||
                 (x, y) == (xOpponent + 1, yOpponent + 1) ||
                 (x, y) == (xOpponent, yOpponent + 1) ||
-                (x, y) == (xOpponent - 1, yOpponent + 1) )
+                (x, y) == (xOpponent - 1, yOpponent + 1))
             {
                 return true;
             }
             else return false;
         }
-        
+
         public Position RandomXodKing(List<Position> list)
         {
             int position;
