@@ -200,6 +200,8 @@ namespace Classes
                         Pat = true;
                         return;
                     }
+                    else
+                        motionColor = 0;
                 }
             }
         }
@@ -258,6 +260,7 @@ namespace Classes
                             Pat = true;
                             return;
                         }
+                        return;
                     }
                     if (check2)
                         return;

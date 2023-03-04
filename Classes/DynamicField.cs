@@ -272,8 +272,9 @@ namespace Classes
                         cMap[x, y] = -6; // индикатор: еще не были здесь
                 }
             }
-            cMap[7, 4] = -6;
-            cMap[0, 4] = -6;
+
+            cMap[finishX, finishY] = -6;
+
             cMap[startX, startY] = 0;
             while (add == true)
             {
