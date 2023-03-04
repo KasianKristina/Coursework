@@ -90,9 +90,14 @@ namespace Classes
                     if (listAll[j].Row == listObstacles[i].Row &&
                         listAll[j].Column == listObstacles[i].Column)
                     {
-                        MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
-                        history.Add(motion, (Id, new Position(listObstacles[i].Row, listObstacles[i].Column)));
-                        return true;
+                        if (history.Count >= 2 && listObstacles[i].Row == history[motion - 2].Item2.Row)
+                            return false;
+                        else
+                        {
+                            MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
+                            history.Add(motion, (Id, new Position(listObstacles[i].Row, listObstacles[i].Column)));
+                            return true;
+                        }
                     }
                 }
             }

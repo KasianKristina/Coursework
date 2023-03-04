@@ -9,7 +9,7 @@ namespace Classes
     public abstract class Figure
     {
         protected Position StartOffset { get; }
-        public int Id { get; set; }
+        public int Id;
         public Position offset { get; set; }
         protected Field GameField { get; set; }
         protected Color Color { get; set; }

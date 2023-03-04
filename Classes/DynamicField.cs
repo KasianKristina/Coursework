@@ -27,7 +27,7 @@ namespace Classes
         public Field GameField;
         public Player player1;
         public Player player2;
-        int motion = 1;
+
 
         public DynamicField()
         {
@@ -40,6 +40,7 @@ namespace Classes
 
         public void Strategy1()
         {
+            int motion = 1;
             while (!IsGameOver())
             {
                 player1.StrategySimple(motion);
@@ -55,6 +56,7 @@ namespace Classes
 
         public void Strategy2()
         {
+            int motion = 1;
             while (!IsGameOver())
             {
                 player1.StrategyCapture(motion);
@@ -117,12 +119,12 @@ namespace Classes
                     {
                         copy[x, y] = -5;
                         i++;
-                    }                 
+                    }
                 }
                 copy.Draw();
                 if (TwoWave(copy))
                     break;
-            }           
+            }
             GameField.Clone(copy);
         }
 
@@ -136,7 +138,7 @@ namespace Classes
             cMap.Draw();
             if (result == -6)
                 return false;
-            
+
             Search(7, 4, result, ref cMap, true);
             cMap.Draw();
             cMap = CreateWave(0, 4, 7, 4, true, cMap);
