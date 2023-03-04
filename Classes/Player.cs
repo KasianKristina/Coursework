@@ -16,6 +16,7 @@ namespace Classes
         public bool Pat = false;
         public int motionColor = 0;
         public Position posEnd;
+        public Dictionary<int, (int, Position)> history;
 
         public Player(Color color, ref Field GameField)
         {
@@ -29,22 +30,18 @@ namespace Classes
         public int Wave(int startX, int startY, int finishX, int finishY, FigureKing figure, int motion)
         {
             int result, fx, fy;
-            // int x, y;
             while (true)
             {
-                //x = finishX;
-                //y = finishY;
-
                 Field cMap = DynamicField.CreateWave(startX, startY, finishX, finishY, false, GameField);
                 result = cMap[finishX, finishY];
-
-                // cMap.Draw();
 
                 (fx, fy) = DynamicField.Search(finishX, finishY, result, ref cMap, false);
 
                 if (fx != -100 && checkXodKing(fx, fy, motion))
                 {
                     figure.MoveBlock(fx, fy);
+                    Position pos = new Position(fx, fy);
+                    history.Add(motion, (king.Id, pos));
                     break;
                 }
                 else
@@ -68,6 +65,7 @@ namespace Classes
                                 checkXodKing(king.offset.Row + pos.Row, king.offset.Column + pos.Column, motion))
                             {
                                 figure.MoveBlock(king.offset.Row + pos.Row, king.offset.Column + pos.Column);
+                                history.Add(motion, (king.Id, new Position(king.offset.Row + pos.Row, king.offset.Column + pos.Column)));
                                 fx = pos.Row;
                                 break;
                             }
@@ -96,6 +94,7 @@ namespace Classes
             }
             return fx;
         }
+
         public bool checkXodKing(int x, int y, int motion)
         {
             if (!Сompetitor.queen.CheckQueenAttack(Сompetitor.queen.offset.Row, Сompetitor.queen.offset.Column, x, y) ||
@@ -112,7 +111,7 @@ namespace Classes
             Console.WriteLine("Ходит {0} ", Color);
             if (motion % 6 == 0)
             {
-                bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion);
+                bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
                 if (check == false)
                 {
 
@@ -136,7 +135,7 @@ namespace Classes
                 {
                     if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                     {
-                        bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion);
+                        bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
                         if (check == false)
                         {
                             Console.WriteLine("пат");
@@ -147,10 +146,21 @@ namespace Classes
             }
         }
 
+        public void PrintHistory()
+        {
+            if (history is null)
+                Console.WriteLine("Hisory null");
+            else
+                foreach (var stat in history)
+                {
+                    Console.WriteLine("Hisory {0}", stat.Value);
+                }
+        }
 
         public void StrategyCapture(int motion)
         {
             motionColor++;
+            PrintHistory();
             Console.WriteLine("Ходит {0} ", Color);
             if (motion % 2 == 0)
             {
@@ -163,13 +173,13 @@ namespace Classes
                 {
                     if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                     {
-                        bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor);
+                        bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
                         if (check)
                         {
                             motionColor = 0;
                             return;
                         }
-                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motionColor);
+                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motionColor, history);
                         if (check == false)
                         {
                             Console.WriteLine("пат");
@@ -183,7 +193,7 @@ namespace Classes
             else
             {
 
-                bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor);
+                bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
 
                 if (check == true)
                 {
@@ -192,7 +202,7 @@ namespace Classes
                 }
                 if (motionColor >= 6)
                 {
-                    check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion);
+                    check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
                     if (check == false)
                     {
                         if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
@@ -213,13 +223,13 @@ namespace Classes
                 {
                     if (-100 == Wave(king.offset.Row, king.offset.Column, posEnd.Row, posEnd.Column, king, motion))
                     {
-                        check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor);
+                        check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
                         if (check)
                         {
                             motionColor = 0;
                             return;
                         }
-                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion);
+                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
                         if (check == false)
                         {
                             Console.WriteLine("пат");

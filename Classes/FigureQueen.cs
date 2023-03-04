@@ -55,7 +55,7 @@ namespace Classes
 
         }
 
-        public bool RandomMove(int kingRow, int kingCol, int motion)
+        public bool RandomMove(int kingRow, int kingCol, int motion, Dictionary<int, (int, Position)> history)
         {
             int position;
             List<Position> list = getAllPosition(offset.Row, offset.Column, kingRow, kingCol, motion);
@@ -72,13 +72,17 @@ namespace Classes
                 }
             }
             MoveBlock(list[position].Row, list[position].Column);
+            history.Add(motion, (Id, new Position(list[position].Row, list[position].Column)));
             return true;
         }
 
-        public bool ObstacleMove(int kingRow, int kingCol, Color color, int motion)
+
+        // TODO убрать позиции по горизонтали
+        // TODO запоминать текущую позицию
+        public bool ObstacleMove(int kingRow, int kingCol, Color color, int motionColor, Dictionary<int, (int, Position)> history, int motion)
         {
             List<Position> listObstacles = getObstaclesPosition(kingRow, kingCol, color);
-            List<Position> listAll = getAllPosition(offset.Row, offset.Column, kingRow, kingCol, motion);
+            List<Position> listAll = getAllPosition(offset.Row, offset.Column, kingRow, kingCol, motionColor);
             for (int i = 0; i < listObstacles.Count; i++)
             {
                 for (int j = 0; j < listAll.Count; j++)
@@ -86,7 +90,8 @@ namespace Classes
                     if (listAll[j].Row == listObstacles[i].Row &&
                         listAll[j].Column == listObstacles[i].Column)
                     {
-                        this.MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
+                        MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
+                        history.Add(motion, (Id, new Position(listObstacles[i].Row, listObstacles[i].Column)));
                         return true;
                     }
                 }
