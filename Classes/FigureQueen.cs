@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -93,13 +94,16 @@ namespace Classes
             return false;
         }
 
-        private void AddPosition (int x, int y, int kingRow, int kingCol, List<Position> list)
+        private bool AddPosition (int x, int y, int kingRow, int kingCol, List<Position> list)
         {
-            if (GameField[x, y] == 0)
+            if (GameField[x, y] != 0)
+                return false;
+            else
             {
                 if (CheckQueenAttack(x, y, kingRow, kingCol))
                     list.Add(new Position(x, y));
             }
+            return true;
         }
 
         // TODO избавиться от дублирования
