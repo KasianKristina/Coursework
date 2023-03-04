@@ -93,7 +93,15 @@ namespace Classes
             return false;
         }
 
-        // TODO ПОФИКСИТЬ
+        private void AddPosition (int x, int y, int kingRow, int kingCol, List<Position> list)
+        {
+            if (GameField[x, y] == 0)
+            {
+                if (CheckQueenAttack(x, y, kingRow, kingCol))
+                    list.Add(new Position(x, y));
+            }
+        }
+
         // TODO избавиться от дублирования
         // возможные позиции королевы
         public List<Position> getAllPosition(int x, int y, int kingRow, int kingCol, int motion)
