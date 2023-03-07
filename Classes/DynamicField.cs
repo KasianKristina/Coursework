@@ -59,11 +59,11 @@ namespace Classes
             int motion = 1;
             while (!IsGameOver())
             {
-                player1.StrategyCapture(motion);
+                player1.Str(motion);
                 if (IsGameOver())
                     break;
                 Draw();
-                player2.StrategyCapture(motion);
+                player2.Str(motion);
                 motion++;
                 Draw();
             }

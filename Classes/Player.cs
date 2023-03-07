@@ -162,7 +162,7 @@ namespace Classes
             motionColor++;
             Console.WriteLine("Ходит {0} ", Color);
 
-            if (motion % 6 == 0)
+            if (motionColor >= 6)
             {
                 bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
                 if (check)

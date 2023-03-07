@@ -88,23 +88,21 @@ namespace Classes
                 for (int j = 0; j < listAll.Count; j++)
                 {
                     if (listAll[j].Row == listObstacles[i].Row &&
-                        listAll[j].Column == listObstacles[i].Column)
+                        listAll[j].Column == listObstacles[i].Column &&
+                        history.Count > 1 &&
+                        listObstacles[i].Row != history[motion - 2].Item2.Row
+                        )
                     {
-                        if (history.Count >= 1 && listObstacles[i].Row == history[motion - 2].Item2.Row)
-                            return false;
-                        else
-                        {
-                            MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
-                            history.Add(motion, (Id, new Position(listObstacles[i].Row, listObstacles[i].Column)));
-                            return true;
-                        }
+                        MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
+                        history.Add(motion, (Id, new Position(listObstacles[i].Row, listObstacles[i].Column)));
+                        return true;
                     }
                 }
             }
             return false;
         }
 
-        private bool AddPosition (int x, int y, int kingRow, int kingCol, List<Position> list)
+        private bool AddPosition(int x, int y, int kingRow, int kingCol, List<Position> list)
         {
             if (GameField[x, y] != 0)
                 return false;
