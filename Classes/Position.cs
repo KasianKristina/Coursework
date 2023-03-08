@@ -17,10 +17,11 @@ namespace Classes
             Column = column;
         }
 
-        public void SetValuesForPosition(int row, int column)
+        public override bool Equals(object obj)
         {
-            Row = row;
-            Column = column;
+            return obj is Position position &&
+                   Row == position.Row &&
+                   Column == position.Column;
         }
     }
 }

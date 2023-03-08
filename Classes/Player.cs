@@ -206,6 +206,56 @@ namespace Classes
             }
         }
 
+        public void StrategySecurity(int motion)
+        {
+            motionColor++;
+            Console.WriteLine("Ходит {0} ", Color);
+
+            if (motionColor >= 6)
+            {
+                bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
+                if (check)
+                {
+                    motionColor = 0;
+                    return;
+                }
+                check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                if (check == false)
+                {
+                    if (-100 == Wave(king, motion))
+                    {
+                        Console.WriteLine("пат");
+                        Pat = true;
+                        return;
+                    }
+                }
+                else
+                    motionColor = 0;
+            }
+            else
+            {
+                bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
+                if (check)
+                {
+                    motionColor = 0;
+                    return;
+                }
+                if (-100 == Wave(king, motion))
+                {
+                    check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                    if (check == false)
+                    {
+                        Console.WriteLine("пат");
+                        Pat = true;
+                        return;
+                    }
+                    else
+                        motionColor = 0;
+                }
+            }
+        }
+
+
         public void StrategyCapture(int motion)
         {
             motionColor++;

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,6 +79,29 @@ namespace Classes
             return true;
         }
 
+        public bool PositionsEquel(int firstRow, int firstCol, int secondRow, int secondCol)
+        {
+            if (firstRow == secondRow && firstCol == secondCol)
+                return true;
+            return false;
+        }
+
+        public bool Check(int kingRow, int kingCol, Color color)
+        {
+            List<Position> listObstacles = getObstaclesPosition(kingRow, kingCol, color);
+            bool res = false;
+            for (int i = 0; i < listObstacles.Count; i++)
+            {
+                res = PositionsEquel(listObstacles[i].Row, listObstacles[i].Column, offset.Row, offset.Column);
+                if (res == true)
+                    break;
+            }
+            Debug.Assert(res == listObstacles.Contains(offset));
+            if (res == listObstacles.Contains(offset))
+                return res;
+            return false;
+        }
+
 
         // TODO убрать позиции по горизонтали
         // TODO запоминать текущую позицию
@@ -87,10 +113,10 @@ namespace Classes
             {
                 for (int j = 0; j < listAll.Count; j++)
                 {
-                    if (listAll[j].Row == listObstacles[i].Row &&
-                        listAll[j].Column == listObstacles[i].Column &&
+                    if (PositionsEquel(listAll[j].Row, listAll[j].Column, listObstacles[i].Row, listObstacles[i].Column) &&
                         history.Count > 1 &&
-                        listObstacles[i].Row != history[motion - 2].Item2.Row
+                        listObstacles[i].Row != history[motion - 1].Item2.Row &&
+                        Check(kingRow, kingCol, color)
                         )
                     {
                         MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
