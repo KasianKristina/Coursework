@@ -86,25 +86,38 @@ namespace Classes
             return false;
         }
 
-        public bool Check(int kingRow, int kingCol, Color color)
+        public bool getPosFerz(int kingRow, int kingCol, Color color)
         {
-            List<Position> listObstacles = getObstaclesPosition(kingRow, kingCol, color);
-            bool res = false;
-            for (int i = 0; i < listObstacles.Count; i++)
+            int k;
+            int pos;
+            if (color == Color.Black)
             {
-                res = PositionsEquel(listObstacles[i].Row, listObstacles[i].Column, offset.Row, offset.Column);
-                if (res == true)
-                    break;
+                k = -1;
+                pos = -4;
             }
-            Debug.Assert(res == listObstacles.Contains(offset));
-            if (res == listObstacles.Contains(offset))
-                return res;
+            else
+            {
+                k = 1;
+                pos = -2;
+            }
+            // вправо
+            for (int i = kingCol + 1; i < 8; i++)
+            {
+                if (GameField.IsInside(kingRow - k, i))
+                    if (GameField[kingRow - k, i] == pos)
+                        return true;
+            }
+            // влево
+            for (int i = kingCol - 1; i >= 0; i--)
+            {
+                if (GameField.IsInside(kingRow - k, i))
+                    if (GameField[kingRow - k, i] == pos)
+                        return true;
+            }
+
             return false;
         }
 
-
-        // TODO убрать позиции по горизонтали
-        // TODO запоминать текущую позицию
         public bool ObstacleMove(int kingRow, int kingCol, Color color, int motionColor, Dictionary<int, (int, Position)> history, int motion)
         {
             List<Position> listObstacles = getObstaclesPosition(kingRow, kingCol, color);
@@ -114,16 +127,28 @@ namespace Classes
                 for (int j = 0; j < listAll.Count; j++)
                 {
                     if (PositionsEquel(listAll[j].Row, listAll[j].Column, listObstacles[i].Row, listObstacles[i].Column) &&
-                        history.Count > 1 &&
+                        history.Count > 2 &&
                         listObstacles[i].Row != history[motion - 1].Item2.Row &&
-                        Check(kingRow, kingCol, color)
-                        )
+                        !getPosFerz(kingRow, kingCol, color))
                     {
                         MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
                         history.Add(motion, (Id, new Position(listObstacles[i].Row, listObstacles[i].Column)));
                         return true;
                     }
                 }
+            }
+            return false;
+        }
+
+        public bool NearbyMove(int kingRow, int kingCol, Color color, int motionColor, Dictionary<int, (int, Position)> history, int motion)
+        {
+            int row = 5;
+            if (color == Color.Black)
+                row = 2;
+            if (kingRow >= row)
+            {
+                ObstacleMove(kingRow, kingCol, color, motionColor, history, motion);
+                return true;
             }
             return false;
         }

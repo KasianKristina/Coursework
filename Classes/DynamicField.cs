@@ -70,6 +70,22 @@ namespace Classes
             Console.WriteLine("Конец игры");
         }
 
+        public void Strategy3()
+        {
+            int motion = 1;
+            while (!IsGameOver())
+            {
+                player1.StrategySecurity(motion);
+                if (IsGameOver())
+                    break;
+                Draw();
+                player2.StrategySecurity(motion);
+                motion++;
+                Draw();
+            }
+            Console.WriteLine("Конец игры");
+        }
+
         public bool IsGameOver()
         {
             if ((GameField[0, 4] == -3) || (GameField[7, 4] == -1))

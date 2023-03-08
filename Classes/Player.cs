@@ -213,7 +213,7 @@ namespace Classes
 
             if (motionColor >= 6)
             {
-                bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
+                bool check = queen.NearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
                 if (check)
                 {
                     motionColor = 0;
@@ -234,23 +234,24 @@ namespace Classes
             }
             else
             {
-                bool check = queen.ObstacleMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
-                if (check)
+                bool check = queen.NearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
+                if (check == false)
                 {
-                    motionColor = 0;
-                    return;
-                }
-                if (-100 == Wave(king, motion))
-                {
-                    check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                    if (check == false)
+                    if (-100 == Wave(king, motion))
                     {
-                        Console.WriteLine("пат");
-                        Pat = true;
-                        return;
+                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                        if (check == false)
+                        {
+                            if (-100 == Wave(king, motion))
+                            {
+                                Console.WriteLine("пат");
+                                Pat = true;
+                                return;
+                            }
+                        }
+                        else
+                            motionColor = 0;
                     }
-                    else
-                        motionColor = 0;
                 }
             }
         }
