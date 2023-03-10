@@ -112,8 +112,8 @@ namespace Classes
             Console.WriteLine("Ходит {0} ", Color);
             if (motion % 6 == 0)
             {
-                bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                if (check == false)
+                bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, 7);
+                if (!check)
                 {
                     if (king.offset.Row == posEnd.Row && king.offset.Column == posEnd.Column)
                         Console.WriteLine("Finish. Win is {0} ", Color);
@@ -121,8 +121,12 @@ namespace Classes
                     {
                         if (-100 == Wave(king, motion))
                         {
-                            Console.WriteLine("пат");
-                            Pat = true;
+                            check = queen.HorizontalMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, history, motion);
+                            if (check == false)
+                            {
+                                Console.WriteLine("пат");
+                                Pat = true;
+                            }
                         }
                     }
                 }
@@ -135,7 +139,7 @@ namespace Classes
                 {
                     if (-100 == Wave(king, motion))
                     {
-                        bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                        bool check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, 0);
                         if (check == false)
                         {
                             Console.WriteLine("пат");
@@ -170,14 +174,18 @@ namespace Classes
                     motionColor = 0;
                     return;
                 }
-                check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, motion);
                 if (check == false)
                 {
                     if (-100 == Wave(king, motion))
                     {
-                        Console.WriteLine("пат");
-                        Pat = true;
-                        return;
+                        check = queen.HorizontalMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, history, motion);
+                        if (check == false)
+                        {
+                            Console.WriteLine("пат");
+                            Pat = true;
+                            return;
+                        }
                     }
                 }
                 else
@@ -193,7 +201,7 @@ namespace Classes
                 }
                 if (-100 == Wave(king, motion))
                 {
-                    check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                    check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, motion);
                     if (check == false)
                     {
                         Console.WriteLine("пат");
@@ -219,14 +227,22 @@ namespace Classes
                     motionColor = 0;
                     return;
                 }
-                check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                if (check == false)
+                check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, motionColor);
+                if (!check)
                 {
                     if (-100 == Wave(king, motion))
                     {
-                        Console.WriteLine("пат");
-                        Pat = true;
-                        return;
+                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, motionColor);
+                        if (!check)
+                        {
+                            check = queen.HorizontalMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, history, motion);
+                            if (!check)
+                            {
+                                Console.WriteLine("пат");
+                                Pat = true;
+                                return;
+                            }
+                        }
                     }
                 }
                 else
@@ -235,19 +251,16 @@ namespace Classes
             else
             {
                 bool check = queen.NearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
-                if (check == false)
+                if (!check)
                 {
                     if (-100 == Wave(king, motion))
                     {
-                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                        if (check == false)
+                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history, motionColor);
+                        if (!check)
                         {
-                            if (-100 == Wave(king, motion))
-                            {
-                                Console.WriteLine("пат");
-                                Pat = true;
-                                return;
-                            }
+                            Console.WriteLine("пат");
+                            Pat = true;
+                            return;
                         }
                         else
                             motionColor = 0;
@@ -279,13 +292,13 @@ namespace Classes
                             motionColor = 0;
                             return;
                         }
-                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                        if (check == false)
-                        {
-                            Console.WriteLine("пат");
-                            Pat = true;
-                            return;
-                        };
+                        //check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                        //if (check == false)
+                        //{
+                        //    Console.WriteLine("пат");
+                        //    Pat = true;
+                        //    return;
+                        //};
                         motionColor = 0;
                     }
                 }
@@ -302,19 +315,19 @@ namespace Classes
                 }
                 if (motionColor >= 6)
                 {
-                    bool check2 = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                    if (!check2)
-                    {
-                        if (-100 == Wave(king, motion))
-                        {
-                            Console.WriteLine("пат");
-                            Pat = true;
-                            return;
-                        }
-                        return;
-                    }
-                    if (check2)
-                        return;
+                    //bool check2 = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                    //if (!check2)
+                    //{
+                    //    if (-100 == Wave(king, motion))
+                    //    {
+                    //        Console.WriteLine("пат");
+                    //        Pat = true;
+                    //        return;
+                    //    }
+                    //    return;
+                    //}
+                    //if (check2)
+                    //    return;
 
                 }
 
@@ -333,14 +346,14 @@ namespace Classes
                             motionColor = 0;
                             return;
                         }
-                        check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
-                        if (check == false)
-                        {
-                            Console.WriteLine("пат");
-                            Pat = true;
-                            return;
-                        };
-                        motionColor = 0;
+                        //check = queen.RandomMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, motion, history);
+                        //if (check == false)
+                        //{
+                        //    Console.WriteLine("пат");
+                        //    Pat = true;
+                        //    return;
+                        //};
+                        //motionColor = 0;
                     }
                 }
 

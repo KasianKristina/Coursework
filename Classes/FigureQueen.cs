@@ -34,46 +34,16 @@ namespace Classes
             Color = color;
         }
 
-        public void ObstaclesQueenCheck()
-        {
-            for (int i = offset.Row + 1; i < 8; i++)
-            {
-                GameField[i, offset.Column] = -7;
-            }
-            for (int i = offset.Row - 1; i > 0; i--)
-            {
-                GameField[i, offset.Column] = -7;
-            }
-
-            for (int j = offset.Column + 1; j < 8; j++)
-            {
-                GameField[offset.Row, j] = -7;
-            }
-            for (int j = offset.Column - 1; j > 0; j--)
-            {
-                GameField[offset.Row, j] = -7;
-            }
-
-            int diag = Math.Abs(offset.Row - offset.Column);
-
-        }
-
-        public bool RandomMove(int kingRow, int kingCol, int motion, Dictionary<int, (int, Position)> history)
+        public bool RandomMove(int kingRow, int kingCol, int motion, Dictionary<int, (int, Position)> history, int motionColor)
         {
             int position;
-            List<Position> list = getAllPosition(offset.Row, offset.Column, kingRow, kingCol, motion);
+            List<Position> list = getAllPosition(offset.Row, offset.Column, kingRow, kingCol, motionColor);
             Random random = new Random();
-            while (true)
-            {
-                if (list.Count == 0)
-                    return false;
-                else
-                {
-                    position = random.Next(list.Count);
-                    if (CheckQueenAttack(list[position].Row, list[position].Column, kingRow, kingCol))
-                        break;
-                }
-            }
+
+            if (list.Count == 0)
+                return false;
+            position = random.Next(list.Count);
+
             MoveBlock(list[position].Row, list[position].Column);
             history.Add(motion, (Id, new Position(list[position].Row, list[position].Column)));
             return true;
@@ -128,7 +98,7 @@ namespace Classes
                 {
                     if (PositionsEquel(listAll[j].Row, listAll[j].Column, listObstacles[i].Row, listObstacles[i].Column) &&
                         history.Count > 1 &&
-                        listObstacles[i].Row != history[motion - 1].Item2.Row &&
+                        listObstacles[i].Row != history[motion - 3].Item2.Row &&
                         !getPosFerz(kingRow, kingCol, color))
                     {
                         MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
@@ -140,35 +110,68 @@ namespace Classes
             return false;
         }
 
+        // 5 2 вынести в класс
         public bool NearbyMove(int kingRow, int kingCol, Color color, int motionColor, Dictionary<int, (int, Position)> history, int motion)
         {
-            int row = 5;
+            int row = 2;
             if (color == Color.Black)
-                row = 2;
-            if (kingRow >= row)
+                row = 5;
+            if ((color == Color.Black && kingRow >= row) || (color == Color.White && kingRow <= row))
             {
-                ObstacleMove(kingRow, kingCol, color, motionColor, history, motion);
-                return true;
+                bool check = ObstacleMove(kingRow, kingCol, color, motionColor, history, motion);
+                    return check;
+            }
+            else if (motionColor >= 6 && ((color == Color.Black && kingRow < row) || (color == Color.White && kingRow > row)))
+            {
+                bool check = moveNearbyPosition(kingRow, kingCol, motion, history);
+                return check;
             }
             else
-            {
-
-            }
-            return false;
+                return false;
         }
 
-        private bool AddPosition(int x, int y, int kingRow, int kingCol, List<Position> list)
+        public bool HorizontalMove(int kingRow, int kingCol, Dictionary<int, (int, Position)> history, int motion)
         {
-            if (GameField[x, y] != 0)
+            int position;
+            List<Position> list = getHorizontalPositions(offset.Row, offset.Column, kingRow, kingCol);
+            Random random = new Random();
+
+            if (list.Count == 0)
                 return false;
-            else
-            {
-                if (CheckQueenAttack(x, y, kingRow, kingCol))
-                    list.Add(new Position(x, y));
-            }
+            position = random.Next(list.Count);
+
+            MoveBlock(list[position].Row, list[position].Column);
+            history.Add(motion, (Id, new Position(list[position].Row, list[position].Column)));
             return true;
         }
 
+        public List<Position> getHorizontalPositions(int x, int y, int kingRow, int kingCol)
+        {
+            List<Position> list = new List<Position>();
+
+            // иду вправо
+            for (int i = y + 1; i < 8; i++)
+            {
+                if (GameField[x, i] == 0)
+                {
+                    if (CheckQueenAttack(x, i, kingRow, kingCol))
+                        list.Add(new Position(x, i));
+                }
+                else break;
+            }
+            // иду влево
+            for (int i = y - 1; i >= 0; i--)
+            {
+                if (GameField[x, i] == 0)
+                {
+                    if (CheckQueenAttack(x, i, kingRow, kingCol))
+                        list.Add(new Position(x, i));
+                }
+                else break;
+            }
+
+            return list;
+        }
         // TODO избавиться от дублирования
         // возможные позиции королевы
         public List<Position> getAllPosition(int x, int y, int kingRow, int kingCol, int motion)
@@ -268,101 +271,30 @@ namespace Classes
             return list;
         }
 
-        public List<Position> getNearbyPosition(int x, int y, int kingRow, int kingCol, int motion)
+        public bool moveNearbyPosition(int kingRow, int kingCol, int motion, Dictionary<int, (int, Position)> history)
         {
-            List<Position> list = new List<Position>();
-            if (motion < 6)
+            List<Position> list = new List<Position>() {
+                            new Position(1, 0),
+                            new Position(1, 1),
+                            new Position(1, -1),
+                            new Position(-1, 0),
+                            new Position(-1, 1),
+                            new Position(-1, -1),
+                        };
+            Random random = new Random();
+            while (list.Any())
             {
-                // иду вправо
-                for (int i = y + 1; i < 8; i++)
+                int position = random.Next(list.Count);
+                if (GameField.IsEmpty(offset.Row + list[position].Row, offset.Column + list[position].Column)
+                    && CheckQueenAttack(offset.Row + list[position].Row, offset.Column + list[position].Column, kingRow, kingCol))
                 {
-                    if (GameField[x, i] == 0)
-                    {
-                        if (CheckQueenAttack(x, i, kingRow, kingCol))
-                            list.Add(new Position(x, i));
-                    }
-                    else break;
+                    MoveBlock(offset.Row + list[position].Row, offset.Column + list[position].Column);
+                    history.Add(motion, (Id, new Position(offset.Row + list[position].Row, offset.Column + list[position].Column)));
+                    return true;
                 }
-                // иду влево
-                for (int i = y - 1; i >= 0; i--)
-                {
-                    if (GameField[x, i] == 0)
-                    {
-                        if (CheckQueenAttack(x, i, kingRow, kingCol))
-                            list.Add(new Position(x, i));
-                    }
-                    else break;
-                }
+                else list.RemoveAt(position);
             }
-            // иду вниз
-            for (int i = x + 1; i < 8; i++)
-            {
-                if (GameField[i, y] == 0)
-                {
-                    if (CheckQueenAttack(i, y, kingRow, kingCol))
-                        list.Add(new Position(i, y));
-                }
-                else break;
-            }
-            // иду вверх
-            for (int i = x - 1; i >= 0; i--)
-            {
-                if (GameField[i, y] == 0)
-                {
-                    if (CheckQueenAttack(i, y, kingRow, kingCol))
-                        list.Add(new Position(i, y));
-                }
-                else break;
-            }
-            // иду в правый нижний угол
-            int rowStep = 1;
-            int columnStep = 1;
-            for (int i = 1; i < 8; i++)
-            {
-                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && GameField[x + i * rowStep, y + i * columnStep] == 0)
-                {
-                    if (CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
-                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
-                }
-                else break;
-            }
-            // иду в левый нижний угол
-            rowStep = 1;
-            columnStep = -1;
-            for (int i = 1; i < 8; i++)
-            {
-                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && GameField[x + i * rowStep, y + i * columnStep] == 0)
-                {
-                    if (CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
-                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
-                }
-                else break;
-            }
-            // иду в правый верхний угол
-            rowStep = -1;
-            columnStep = 1;
-            for (int i = 1; i < 8; i++)
-            {
-                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && GameField[x + i * rowStep, y + i * columnStep] == 0)
-                {
-                    if (CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
-                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
-                }
-                else break;
-            }
-            // иду в левый верхний угол
-            rowStep = -1;
-            columnStep = -1;
-            for (int i = 1; i < 8; i++)
-            {
-                if (GameField.IsInside(x + i * rowStep, y + i * columnStep) && GameField[x + i * rowStep, y + i * columnStep] == 0)
-                {
-                    if (CheckQueenAttack(x + i * rowStep, y + i * columnStep, kingRow, kingCol))
-                        list.Add(new Position(x + i * rowStep, y + i * columnStep));
-                }
-                else break;
-            }
-            return list;
+            return false;
         }
 
         // все позиции для блокировки короля соперника
@@ -471,49 +403,6 @@ namespace Classes
                 return false;
             }
             return true;
-        }
-
-
-        // проверка, что ферзь может сходить
-        public bool OpportunityToMakeMoveQueen(int x, int y, int xNext, int yNext, int motion, bool flag)
-        {
-            if (QueenOnHorizontal(x, y, xNext, yNext, motion, flag) &&
-                GameField[x, y] != -5 &&
-                GameField[x, y] != -7)
-                return true;
-            else return false;
-        }
-
-        // проверка: ферзь не может находиться на одной горизонтали дольше 5 ходов, если он не заблокирован (иначе поражение)
-        public bool QueenOnHorizontal(int x, int y, int xNext, int yNext, int motion, bool flag)
-        {
-            if (QueenNotHorizontal(x, xNext, motion, flag))
-                return true;
-            else if (QueenIsNotLocked(x, y))
-            {
-                //GameOver = true;
-                return false;
-            }
-            else return true;
-        }
-
-        // ферзь не находится на одной горизонтали дольше 5 ходов
-        public bool QueenNotHorizontal(int x, int xNext, int motion, bool flag)
-        {
-            if (motion > 5 && flag && x == xNext)
-                return false;
-            else return true;
-        }
-
-        // ферзь заблокирован
-        public bool QueenIsNotLocked(int x, int y)
-        {
-            if (GameField[x + 1, y] < 0 && GameField[x + 1, y + 1] < 0 &&
-                GameField[x, y + 1] < 0 && GameField[x - 1, y + 1] < 0 &&
-                GameField[x - 1, y] < 0 && GameField[x - 1, y - 1] < 0 &&
-                GameField[x, y - 1] < 0 && GameField[x + 1, y - 1] < 0)
-                return false;
-            else return true;
         }
     }
 }
