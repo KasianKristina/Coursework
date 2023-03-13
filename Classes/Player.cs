@@ -221,7 +221,7 @@ namespace Classes
 
             if (motionColor >= 6)
             {
-                bool check = queen.NearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
+                bool check = queen.ObstacleOrNearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
                 if (check)
                 {
                     motionColor = 0;
@@ -250,7 +250,7 @@ namespace Classes
             }
             else
             {
-                bool check = queen.NearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
+                bool check = queen.ObstacleOrNearbyMove(Сompetitor.king.offset.Row, Сompetitor.king.offset.Column, Color, motionColor, history, motion);
                 if (!check)
                 {
                     if (-100 == Wave(king, motion))
@@ -266,6 +266,8 @@ namespace Classes
                             motionColor = 0;
                     }
                 }
+                else
+                    motionColor = 0;
             }
         }
 

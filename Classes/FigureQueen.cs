@@ -98,7 +98,7 @@ namespace Classes
                 {
                     if (PositionsEquel(listAll[j].Row, listAll[j].Column, listObstacles[i].Row, listObstacles[i].Column) &&
                         history.Count > 1 &&
-                        listObstacles[i].Row != history[motion - 3].Item2.Row &&
+                        listObstacles[i].Row != history[motion - 1].Item2.Row &&
                         !getPosFerz(kingRow, kingCol, color))
                     {
                         MoveBlock(listObstacles[i].Row, listObstacles[i].Column);
@@ -111,7 +111,7 @@ namespace Classes
         }
 
         // 5 2 вынести в класс
-        public bool NearbyMove(int kingRow, int kingCol, Color color, int motionColor, Dictionary<int, (int, Position)> history, int motion)
+        public bool ObstacleOrNearbyMove(int kingRow, int kingCol, Color color, int motionColor, Dictionary<int, (int, Position)> history, int motion)
         {
             int row = 2;
             if (color == Color.Black)
@@ -123,7 +123,7 @@ namespace Classes
             }
             else if (motionColor >= 6 && ((color == Color.Black && kingRow < row) || (color == Color.White && kingRow > row)))
             {
-                bool check = moveNearbyPosition(kingRow, kingCol, motion, history);
+                bool check = NearbyMove(kingRow, kingCol, motion, history);
                 return check;
             }
             else
@@ -271,7 +271,7 @@ namespace Classes
             return list;
         }
 
-        public bool moveNearbyPosition(int kingRow, int kingCol, int motion, Dictionary<int, (int, Position)> history)
+        public bool NearbyMove(int kingRow, int kingCol, int motion, Dictionary<int, (int, Position)> history)
         {
             List<Position> list = new List<Position>() {
                             new Position(1, 0),
